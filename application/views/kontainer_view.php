@@ -75,6 +75,7 @@
 							<option>20"</option>
 							<option>40"</option>
 							<option>50"</option>
+							<option>60"</option>
 						</select>
 					</p></div>
 					<div class="grid_1"><p>
