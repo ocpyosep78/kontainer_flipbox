@@ -197,7 +197,7 @@
 		var input_kode = "<input id='input_kode_"+no+"' type='text' value='"+val_kode+"' style='width:100px;'/>";
 		var input_nomor = "<input id='input_nomor_"+no+"' type='text' value='"+val_nomor+"' style='width:100px;'/>";
 		var input_ukuran = "<select id='input_perusahaan_"+no+"' style='width:100px;'>" +
-									"<option value='-'>[Pilih Ukuran]</option>" +
+									"<option value='-'>[Pilih Ukuran]</option>" +									
 									"<option value='10\"'>10\"</option>" +
 									"<option value='20\"'>20\"</option>" +
 									"<option value='40\"'>40\"</option>" +
