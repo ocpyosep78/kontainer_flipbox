@@ -2,9 +2,17 @@
 	text-align:center;
 }
 
+a {
+	text-decoration:none;
+}
+
 ol {
 	padding:10px;
 	margin:0;
+}
+
+.center_column{
+	text-align:center;
 }
 
 caption {
@@ -219,3 +227,26 @@ input[type="submit"], input[type="reset"] {
 	margin:0 2px;
 	padding:2px 6px;
 }
+
+
+/* Datepicker */
+.ui-datepicker-header {
+	margin-top: 10px;
+}
+
+.ui-datepicker-prev {
+	position:absolute;
+	top:5px;
+	left:290px;
+	cursor:pointer;
+	cursor:hand;
+}
+
+.ui-datepicker-next {
+	position:absolute;
+	top:5px;
+	left:330px;
+	cursor:pointer;
+	cursor:hand;
+}
+

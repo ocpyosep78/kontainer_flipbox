@@ -11,24 +11,36 @@ class Kontainer extends CI_Controller
 
 	function index()
 	{
-		$data['rows'] = $this->kontainer->get_rows(0, 20);
-		$data['perusahaan'] = $this->perusahaan->get_all_perusahaan();
+		$data['rows'] = $this->kontainer->get_rows(0, 30);
+		$data['list_perusahaan'] = $this->perusahaan->get_all_perusahaan();
+		$data['maxpage'] = $this->kontainer->get_max_page();
+		$data['page'] = 1;
 
 		$this->load->view('kontainer_view', $data);
 	}
 
 	function page($pg)
 	{
-		$data['rows'] = $this->kontainer->get_rows(20*($pg-1), 20);
-		$data['perusahaan'] = $this->perusahaan->get_all_perusahaan();
+		$data['rows'] = $this->kontainer->get_rows(30*($pg-1), 30);
+		$data['list_perusahaan'] = $this->perusahaan->get_all_perusahaan();
+		$data['maxpage'] = $this->kontainer->get_max_page();
+		$data['page'] = $pg;
 
 		$this->load->view('kontainer_view', $data);
 	}
 
 	function entry()
 	{
-		
-		
+		$data = $_POST;
+		$this->kontainer->insert($data);
+
+		redirect('kontainer');
+	}
+
+	function delete($no)
+	{
+		$this->kontainer->delete($no);
+
 		redirect('kontainer');
 	}
 }

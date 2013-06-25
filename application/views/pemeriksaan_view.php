@@ -11,31 +11,6 @@
 		<script src="<?=base_url();?>application/js/jquery-1.4.2.js" type="text/javascript"></script>
 		<script src="<?=base_url();?>application/js/jquery-ui-1.8.1.js" type="text/javascript"></script>
 		<script src="<?=base_url();?>application/js/jquery.tablesorter.js" type="text/javascript"></script>
-
-		<script type="text/javascript">
-			$(function() {
-				$("#content .grid_5, #content .grid_6").sortable({
-					placeholder: 'ui-state-highlight',
-					forcePlaceholderSize: true,
-					connectWith: '#content .grid_6, #content .grid_5',
-					handle: 'h2',
-					revert: true
-				});
-				$("#content .grid_5, #content .grid_6").disableSelection();
-			});
-			$(document).ready(function() 
-		    	{ 
-		        	$("#dataList").tablesorter(); 
-		    	} 
-			);
-		</script>
-		<script>
-			$(function() {
-				$( "#datepicker" ).datepicker();
-				$( "#datepicker2" ).datepicker();
-				$( "#datepicker3" ).datepicker();
-			});
-		</script>
 	</head>
 	<body>
 		<header>
@@ -238,3 +213,29 @@
 		<footer></footer>
 	</body>
 </html>
+
+<script type="text/javascript">
+	$(function(){
+		$("#content .grid_5, #content .grid_6").sortable({
+			placeholder: 'ui-state-highlight',
+			forcePlaceholderSize: true,
+			connectWith: '#content .grid_6, #content .grid_5',
+			handle: 'h2',
+			revert: true
+		});
+		$("#content .grid_5, #content .grid_6").disableSelection();
+	});
+
+	$(document).ready(function(){ 
+        $("#dataList").tablesorter(); 
+	);
+
+	$(function(){
+		$("#datepicker").datepicker();
+		$("#datepicker2").datepicker();
+		$("#datepicker3").datepicker();
+	});
+	
+</script>
+
+
