@@ -7,6 +7,15 @@ class Kontainer_model extends CI_Model
 		parent::__construct();
 	}
 
+	function get_search_all_rows($key)
+	{
+		$kueri = "SELECT * FROM kontainer WHERE no like '%$key%' OR tanggal like '%$key%' OR perusahaan like '%$key%'
+				OR kode like '%$key%' OR nomor like '%$key%' OR ukuran LIKE '%$key%'
+				ORDER BY tanggal,no";
+		$ret = $this->db->query($kueri)->result_array();
+		return $ret;
+	}
+
 	function get_all_rows()
 	{
 		$kueri = "SELECT * FROM kontainer ORDER BY tanggal,no";
@@ -21,13 +30,41 @@ class Kontainer_model extends CI_Model
 		return $ret;
 	}
 
+	function get_search_rows($key, $start, $limit)
+	{
+		$tanggal = "tanggal like '%$key%' OR";
+		if($key == '-') $tanggal = "";
+		$kueri = "SELECT * FROM kontainer WHERE no like '%$key%' OR $tanggal perusahaan like '%$key%'
+				OR kode like '%$key%' OR nomor like '%$key%' OR ukuran LIKE '%$key%'
+				ORDER BY tanggal,no LIMIT $start, $limit";
+		$ret = $this->db->query($kueri)->result_array();
+		return $ret;
+	}
+
+	function get_row($no)
+	{
+		$kueri = "SELECT * FROM kontainer WHERE no = $no";
+		$ret = $this->db->query($kueri)->result_array();
+		return $ret;
+	}
+
 	function insert($data)
 	{
 		$tanggal = $data['tanggal'];
 		$part = explode('/', $tanggal);
 		$data['tanggal'] = $part[2].'-'.$part[0].'-'.$part[1];
-		echo $data['tanggal'];
+		// echo $data['tanggal'];
 		$this->db->insert('kontainer', $data);
+	}
+
+	function update($data)
+	{
+		$tanggal = $data['tanggal'];
+		$part = explode('/', $tanggal);
+		$data['tanggal'] = $part[2].'-'.$part[0].'-'.$part[1];
+		// echo $data['tanggal'];
+		$this->db->where('no', $data['no']);
+		$this->db->update('kontainer', $data); 
 	}
 
 	function delete($no)
@@ -39,6 +76,12 @@ class Kontainer_model extends CI_Model
 	function get_max_page()
 	{
 		$numrows = count($this->get_all_rows());
+		return intval(($numrows-1)/30) + 1;
+	}
+
+	function get_search_max_page($key)
+	{
+		$numrows = count($this->get_search_all_rows($key));
 		return intval(($numrows-1)/30) + 1;
 	}
 }

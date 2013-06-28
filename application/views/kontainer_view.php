@@ -23,13 +23,13 @@
 		<section>
 			<div id="content" class="container_16 clearfix">
 				<form method="post" action="<?=site_url('kontainer/entry')?>">
-					<div id="input_no" class="grid_1"><p>
+					<div class="grid_1"><p>
 						<input name="no" type="text" placeholder="No"/>
 					</p></div>
-					<div id="input_tanggal" class="grid_2"><p>
+					<div class="grid_2"><p>
 						<input name="tanggal" type="text" id="datepicker" placeholder="Tanggal" required/>
 					</p></div>
-					<div id="input_perusahaan" class="grid_3"><p>
+					<div class="grid_3"><p>
 						<select name="perusahaan" required>
 							<option value='-'>[Pilih Perusahaan]</option>
 							<?php
@@ -39,13 +39,13 @@
 							?>
 						</select>
 					</p></div>
-					<div id="input_kode" class="grid_2"><p>
+					<div class="grid_2"><p>
 						<input name="kode" type="text" placeholder="Kode Kontainer" required/>
 					</p></div>
-					<div id="input_nomor" class="grid_2"><p>
+					<div class="grid_2"><p>
 						<input name="nomor" type="text" placeholder="Nomer Kontainer" required/>
 					</p></div>
-					<div id="input_ukuran" class="grid_2"><p>
+					<div class="grid_2"><p>
 						<select name="ukuran">
 							<option value='-'>[Pilih Ukuran]</option>
 							<option value='10"'>10"</option>
@@ -56,6 +56,7 @@
 						</select>
 					</p></div>
 					<div class="grid_1"><p>
+						<input name="fun" type="hidden" value="<?php if(isset($key)) echo $key; else echo 'page';?>"/>
 						<input type="submit" value="Submit"/>
 					</p></div>
 				</form>
@@ -64,16 +65,18 @@
 				<div class="grid_9">
 					<p>&nbsp;</p>
 				</div>
-				<div class="grid_4">
-					<p>
-						<input type="text" placeholder="search table"/>
-					</p>
-				</div>
-				<div class="grid_1">
-					<p>
-						<input type="submit" value="Search" />
-					</p>
-				</div>
+				<form method='POST' action='<?=base_url();?>kontainer/search'>
+					<div class="grid_4">
+						<p>
+							<input type="text" name='search' placeholder="Search Table"/>
+						</p>
+					</div>
+					<div class="grid_1">
+						<p>
+							<input type="submit" value="Search" />
+						</p>
+					</div>
+				</form>
 				<div class="grid_1">
 					<p>
 						<button class="error">Download</button>
@@ -101,7 +104,9 @@
 								$tgl = explode('-', $tanggal);
 								$tanggal = $tgl[1].'/'.$tgl[2].'/'.$tgl[0];
 
-								$delete = base_url()."kontainer/delete/".$no;
+								$back_url = urlencode(base_url()."kontainer/page/".$page);
+								if(isset($key)) $back_url = urlencode(base_url()."kontainer/search?key=".$key."&page=".$page);
+								$delete = base_url()."kontainer/delete/".$no."?back_url=$back_url";
 								echo "
 									<tr>
 										<td id='col_no_$no' class='center_column'>$no</td>
@@ -123,7 +128,13 @@
 							<tr>
 								<td colspan="9" class="pagination">
 									<?php 
-										if($maxpage > 10 && $page > 5) echo "<a href='".site_url('kontainer/page/'.($page-1))."' class='curved'>Prev</a>";
+										$prev = $page-1;
+										$next = $page+1;
+
+										if($maxpage > 10 && $page > 5){
+											if(isset($key)) echo "<a href='".base_url()."kontainer/search?key=$key&page=$prev' class='curved'>Prev</a>";
+											else echo "<a href='".base_url()."kontainer/page/$prev' class='curved'>Prev</a>";
+										}
 
 										$st = $page-4;
 										if($st < 1) $st = 1;
@@ -135,11 +146,17 @@
 										}
 
 										for($i = $st; $i <= $en; $i++){
-											if($i == $page) echo "<span class='active curved'>".$i."</span>";
-											else echo "<a href='".site_url('kontainer/page/'.$i)."' class='curved'>".$i."</a>";
+											if($i == $page) echo "<span class='active curved'>$i</span>";
+											else{
+												if(isset($key)) echo "<a href='".base_url()."kontainer/search?key=$key&page=$i' class='curved'>$i</a>";
+												else echo "<a href='".base_url()."kontainer/page/$i' class='curved'>$i</a>";
+											}
 										}
 
-										if($maxpage > 10 && $page+5 < $maxpage) echo "<a href='".site_url('kontainer/page/'.($page+1))."' class='curved'>Next</a>";
+										if($maxpage > 10 && $page+5 < $maxpage){
+											if(isset($key)) echo "<a href='".base_url()."kontainer/search?key=$key&page=$next' class='curved'>Next</a>";
+											else echo "<a href='".base_url()."kontainer/page/$next' class='curved'>Next</a>";
+										}
 									?>
 								</td>
 							</tr>
@@ -183,8 +200,10 @@
 		var val_nomor = $("#col_nomor_"+no).html();
 		var val_ukuran = $("#col_ukuran_"+no).html();
 
-		var input_tanggal = "<input id='input_tanggal_"+no+"' type='text' class='datepicker_"+no+"' value='"+val_tanggal+"' style='width:80px;'/>";
-		var input_perusahaan = "<select id='input_perusahaan_"+no+"' style='width:150px;'> <option value='-'>[Pilih Perusahaan]</option>" + 
+		val_ukuran = val_ukuran.replace("\"","");
+
+		var input_tanggal = "<input id='input_tanggal_"+no+"' name='tanggal' type='text' class='datepicker_"+no+"' value='"+val_tanggal+"' style='width:80px;'/>";
+		var input_perusahaan = "<select id='input_perusahaan_"+no+"' name='perusahaan' style='width:150px;'> <option value='-'>[Pilih Perusahaan]</option>" + 
 									<?php
 									echo "\"";
 									foreach($list_perusahaan as $per){
@@ -194,33 +213,69 @@
 									echo "\"";
 									?>
 								+ "</select>";
-		var input_kode = "<input id='input_kode_"+no+"' type='text' value='"+val_kode+"' style='width:100px;'/>";
-		var input_nomor = "<input id='input_nomor_"+no+"' type='text' value='"+val_nomor+"' style='width:100px;'/>";
-		var input_ukuran = "<select id='input_perusahaan_"+no+"' style='width:100px;'>" +
-									"<option value='-'>[Pilih Ukuran]</option>" +									
+		var input_kode = "<input id='input_kode_"+no+"' name='kode' type='text' value='"+val_kode+"' style='width:100px;'/>";
+		var input_nomor = "<input id='input_nomor_"+no+"' name='nomor' type='text' value='"+val_nomor+"' style='width:100px;'/>";
+		var input_ukuran = "<select id='input_perusahaan_"+no+"' name='ukuran' style='width:100px;'>" +
+									"<option value='-'>[Pilih Ukuran]</option>" +
 									"<option value='10\"'>10\"</option>" +
 									"<option value='20\"'>20\"</option>" +
 									"<option value='40\"'>40\"</option>" +
 									"<option value='50\"'>50\"</option>" +
 									"<option value='60\"'>60\"</option>" +
 								"</select>";
-		var save_button = "<input class='center_column' colspan='3' type='submit' value='Save' onclick=\"save_row('"+no+"')\"/>";
-
+		var save_button = "<input class='center_column' type='submit' value='S' onclick=\"save_row('"+no+"')\"/>";
+		var cancel_button = "<input  class='center_column' type='submit' value='C' onclick=\"cancel_row('"+no+"','"+val_tanggal+"','"+val_perusahaan+"','"+val_kode+"','"+val_nomor+"','"+val_ukuran+"')\"/>";
+		
 		$("#col_tanggal_"+no).html(input_tanggal);
 		$("#col_perusahaan_"+no).html(input_perusahaan);
 		$("#col_kode_"+no).html(input_kode);
 		$("#col_nomor_"+no).html(input_nomor);
 		$("#col_ukuran_"+no).html(input_ukuran);
-		$("#col_ip_"+no).html("");
-		$("#col_edit_"+no).html(save_button);
+		$("#col_ip_"+no).html(save_button);
+		$("#col_edit_"+no).html(cancel_button);
 		$("#col_delete_"+no).html("");
-
 		$(".datepicker_"+no).datepicker();
 	}
 
 	function save_row(no)
 	{
+		var form_data = {
+			no: no,
+			tanggal: $("#input_tanggal"+no).val(),
+			perusahaan: $("#input_perusahaan"+no).val(),
+			kode: $("#input_kode"+no).val(),
+			nomor: $("#input_nomor"+no).val(),
+			ukuran: $("#input_ukuran"+no).val(),
+			ajax: '1'
+		};
 
+		$.ajax({
+			url: "<?=site_url('kontainer/update');?>",
+			type: "POST",
+			data: form_data,
+			success: function(msg){
+				alert(msg);
+				//$.fancybox.close();
+			}
+		});
+	}
+
+	function cancel_row(no, tanggal, perusahaan, kode, nomor, ukuran)
+	{
+		<?php
+		$back_url = urlencode(base_url()."kontainer/page/".$page);
+		if(isset($key)) $back_url = urlencode(base_url()."kontainer/search?key=".$key."&page=".$page);
+		$delete = base_url()."kontainer/delete/".$no."?back_url=$back_url";	
+		?>
+
+		$("#col_tanggal_"+no).html(tanggal);
+		$("#col_perusahaan_"+no).html(perusahaan);
+		$("#col_kode_"+no).html(kode);
+		$("#col_nomor_"+no).html(nomor);
+		$("#col_ukuran_"+no).html(ukuran + ((ukuran == "-") ? "" : "\""));
+		$("#col_ip_"+no).html("<a href='#' class='ip'></a>");
+		$("#col_edit_"+no).html("<a href='#' onclick=\"edit_row('"+no+"')\" class='edit'></a>");
+		$("#col_delete_"+no).html("<a href='<?=$delete;?>' class='delete'></a>");
 	}
 
 	function tes()
@@ -229,6 +284,5 @@
 	}
 	
 </script>
-
 
 
