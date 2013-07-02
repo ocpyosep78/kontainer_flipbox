@@ -39,7 +39,7 @@ a {
 a.edit {
 	background-image:url(../img/edit.png)
 }
-a.delete {
+a.trash {
 	background-image:url(../img/trash.png)
 }
 a.ip{
@@ -47,6 +47,18 @@ a.ip{
 }
 a.spbb{
 	background-image:url(../img/spbb.png)
+}
+a.cancel{
+	background-image:url(../img/cancel.png)
+}
+a.save{
+	background-image:url(../img/save.png)
+}
+a.delete{
+	background-image:url(../img/delete.png)
+}
+a.unip{
+	background-image:url(../img/unip.png)
 }
 
 #head {

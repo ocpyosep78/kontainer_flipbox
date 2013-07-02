@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Kontainer_model extends CI_Model
+class Pemeriksaan_model extends CI_Model
 {
 	function __construct()
 	{
@@ -9,7 +9,14 @@ class Kontainer_model extends CI_Model
 
 	function get_all_rows()
 	{
-		$kueri = "SELECT * FROM kontainer ORDER BY tanggal,no";
+		$kueri = "SELECT * FROM kontainer WHERE status = 1 ORDER BY tanggal,no";
+		$ret = $this->db->query($kueri)->result_array();
+		return $ret;
+	}
+
+	function get_rows($start, $limit)
+	{
+		$kueri = "SELECT * FROM kontainer WHERE status = 1 ORDER BY tanggal,no LIMIT $start, $limit";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
 	}
@@ -18,16 +25,9 @@ class Kontainer_model extends CI_Model
 	{
 		$tanggal = "tanggal like '%$key%' OR";
 		if($key == '-') $tanggal = "";
-		$kueri = "SELECT * FROM kontainer WHERE no like '%$key%' OR $tanggal perusahaan like '%$key%'
-				OR kode like '%$key%' OR nomor like '%$key%' OR ukuran LIKE '%$key%'
+		$kueri = "SELECT * FROM kontainer WHERE status = 1 AND (no like '%$key%' OR $tanggal perusahaan like '%$key%'
+				OR kode like '%$key%' OR nomor like '%$key%' OR ukuran LIKE '%$key%')
 				ORDER BY tanggal,no";
-		$ret = $this->db->query($kueri)->result_array();
-		return $ret;
-	}
-
-	function get_rows($start, $limit)
-	{
-		$kueri = "SELECT * FROM kontainer ORDER BY tanggal,no LIMIT $start, $limit";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
 	}
@@ -36,8 +36,8 @@ class Kontainer_model extends CI_Model
 	{
 		$tanggal = "tanggal like '%$key%' OR";
 		if($key == '-') $tanggal = "";
-		$kueri = "SELECT * FROM kontainer WHERE no like '%$key%' OR $tanggal perusahaan like '%$key%'
-				OR kode like '%$key%' OR nomor like '%$key%' OR ukuran LIKE '%$key%'
+		$kueri = "SELECT * FROM kontainer WHERE status = 1 AND (no like '%$key%' OR $tanggal perusahaan like '%$key%'
+				OR kode like '%$key%' OR nomor like '%$key%' OR ukuran LIKE '%$key%')
 				ORDER BY tanggal,no LIMIT $start, $limit";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
@@ -45,7 +45,7 @@ class Kontainer_model extends CI_Model
 
 	function get_row($no)
 	{
-		$kueri = "SELECT * FROM kontainer WHERE no = $no";
+		$kueri = "SELECT * FROM kontainer WHERE status = 1 AND no = $no";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
 	}
@@ -61,11 +61,9 @@ class Kontainer_model extends CI_Model
 
 	function update($data)
 	{
-		if(isset($data['tanggal'])){
-			$tanggal = $data['tanggal'];
-			$part = explode('/', $tanggal);
-			$data['tanggal'] = $part[2].'-'.$part[0].'-'.$part[1];
-		}
+		$tanggal = $data['tanggal'];
+		$part = explode('/', $tanggal);
+		$data['tanggal'] = $part[2].'-'.$part[0].'-'.$part[1];
 		$this->db->where('no', $data['no']);
 		$ret = $this->db->update('kontainer', $data); 
 		return $ret;

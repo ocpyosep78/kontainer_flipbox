@@ -33,7 +33,8 @@ class Kontainer extends CI_Controller
 		$this->load->view('kontainer_view', $data);
 	}
 
-	function search(){
+	function search()
+	{
 		$key;
 		if(isset($_POST['search'])) $key = $_POST['search'];
 		else $key = $_GET['key'];
@@ -62,6 +63,24 @@ class Kontainer extends CI_Controller
 		redirect('kontainer/'.(($fun == "page") ? $fun : ("search?key=".$fun)));
 	}
 
+	function ip($no)
+	{
+		extract($_GET);
+		$data['no'] = $no;
+		$data['status'] = '1';
+		if(isset($no_pib)) $data['no_pib'] = $no_pib;
+		if(isset($tgl_pib)) $data['tgl_pib'] = $tgl_pib;
+		if(isset($jam_ip)) $data['jam_ip'] = $jam_ip;
+		if(isset($jam_periksa)) $data['jam_periksa'] = $jam_periksa;
+		if(isset($uraian)) $data['uraian'] = $uraian;
+		if(isset($pemeriksa)) $data['pemeriksa'] = $pemeriksa;
+
+		$this->kontainer->update($data);
+
+		if(isset($back_url)) redirect($back_url);
+		redirect('kontainer');
+	}
+
 	function delete($no)
 	{
 		$this->kontainer->delete($no);
@@ -73,11 +92,17 @@ class Kontainer extends CI_Controller
 		redirect('kontainer');
 	}
 
-	function update(){
-		$data = $_POST;
-		$this->kontainer->update($data);
-		return "Hai";
-
-		//redirect('kontainer');
+	function update()
+	{
+		$data['no'] = $_POST['no'];
+		$data['tanggal'] = $_POST['tanggal'];
+		$data['perusahaan'] = $_POST['perusahaan'];
+		$data['kode'] = $_POST['kode'];
+		$data['nomor'] = $_POST['nomor'];
+		$data['ukuran'] = $_POST['ukuran'];
+		$ret = $this->kontainer->update($data);
 	}
 }
+
+
+

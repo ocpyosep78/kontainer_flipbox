@@ -11,10 +11,6 @@ ol {
 	margin:0;
 }
 
-.center_column{
-	text-align:center;
-}
-
 caption {
 	padding:4px;
 }
@@ -100,7 +96,7 @@ a:hover {
 	text-decoration:none;
 }
 
-a.edit, a.delete, a.ip, a.spbb {
+a.edit, a.trash, a.ip, a.spbb, a.save, a.cancel, a.delete, a.unip{
 	padding-left:12px;
 	background-repeat:no-repeat;
 	background-position:left center;
@@ -267,3 +263,31 @@ input[type="submit"], input[type="reset"] {
 	width:860px;
 	height:50px;
 }
+
+#dataList {
+	table-layout:fixed;
+}
+
+#dataList th,td{
+	vertical-align:middle;
+}
+
+#dataList2 {
+	table-layout:fixed;
+	width:1200px;
+	margin-left:-130px;
+}
+
+#dataList2 th,td{
+	vertical-align:bottom;
+	font-size:12px;
+}
+
+#ip_row {
+	padding-top:15px;
+	background-color:#bbb;
+	width:770px;
+	height:50px;
+}
+
+
