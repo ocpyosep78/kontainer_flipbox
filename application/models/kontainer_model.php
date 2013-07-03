@@ -16,7 +16,8 @@ class Kontainer_model extends CI_Model
 
 	function get_search_all_rows($key)
 	{
-		$tanggal = "tanggal like '%$key%' OR";
+		$keytanggal = str_replace("/", "-", $key);
+		$tanggal = "tanggal like '%$keytanggal%' OR";
 		if($key == '-') $tanggal = "";
 		$kueri = "SELECT * FROM kontainer WHERE no like '%$key%' OR $tanggal perusahaan like '%$key%'
 				OR kode like '%$key%' OR nomor like '%$key%' OR ukuran LIKE '%$key%'
@@ -34,7 +35,8 @@ class Kontainer_model extends CI_Model
 
 	function get_search_rows($key, $start, $limit)
 	{
-		$tanggal = "tanggal like '%$key%' OR";
+		$keytanggal = str_replace("/", "-", $key);
+		$tanggal = "tanggal like '%$keytanggal%' OR";
 		if($key == '-') $tanggal = "";
 		$kueri = "SELECT * FROM kontainer WHERE no like '%$key%' OR $tanggal perusahaan like '%$key%'
 				OR kode like '%$key%' OR nomor like '%$key%' OR ukuran LIKE '%$key%'
@@ -52,19 +54,20 @@ class Kontainer_model extends CI_Model
 
 	function insert($data)
 	{
-		$tanggal = $data['tanggal'];
-		$part = explode('/', $tanggal);
-		$data['tanggal'] = $part[2].'-'.$part[0].'-'.$part[1];
-		// echo $data['tanggal'];
+		$data['tanggal'] = str_replace("/", "-", $data['tanggal']);
+
+		if(isset($data['tgl_pib'])){
+			$part = explode('/', $tgl_pib);
+			$data['tgl_pib'] = $part[2].'-'.$part[0].'-'.$part[1];
+		}
+		
 		$this->db->insert('kontainer', $data);
 	}
 
 	function update($data)
 	{
 		if(isset($data['tanggal'])){
-			$tanggal = $data['tanggal'];
-			$part = explode('/', $tanggal);
-			$data['tanggal'] = $part[2].'-'.$part[0].'-'.$part[1];
+			$data['tanggal'] = str_replace("/", "-", $data['tanggal']);
 		}
 		$this->db->where('no', $data['no']);
 		$ret = $this->db->update('kontainer', $data); 

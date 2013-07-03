@@ -43,10 +43,10 @@ a.trash {
 	background-image:url(../img/trash.png)
 }
 a.ip{
-	background-image:url(../img/ip.png)
+	background-image:url(../img/ip.png);
 }
-a.spbb{
-	background-image:url(../img/spbb.png)
+a.sppb{
+	background-image:url(../img/sppb.png)
 }
 a.cancel{
 	background-image:url(../img/cancel.png)
@@ -58,7 +58,12 @@ a.delete{
 	background-image:url(../img/delete.png)
 }
 a.unip{
-	background-image:url(../img/unip.png)
+	background-image:url(../img/ip.png);
+	opacity:0.5;
+}
+a.sppbyes{
+	background-image:url(../img/sppb.png);
+	opacity:0.5;
 }
 
 #head {

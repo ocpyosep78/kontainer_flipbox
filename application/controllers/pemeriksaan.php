@@ -58,6 +58,7 @@ class Pemeriksaan extends CI_Controller
 		$data = $_POST;
 		$fun = $data['fun'];
 		unset($data['fun']);
+		$data['status'] = '1';
 		$this->pemeriksaan->insert($data);
 
 		redirect('pemeriksaan/'.(($fun == "page") ? $fun : ("search?key=".$fun)));
@@ -79,10 +80,27 @@ class Pemeriksaan extends CI_Controller
 		$data['no'] = $_POST['no'];
 		$data['tanggal'] = $_POST['tanggal'];
 		$data['perusahaan'] = $_POST['perusahaan'];
+		$data['no_pib'] = $_POST['no_pib'];
+		$data['tgl_pib'] = $_POST['tgl_pib'];
 		$data['kode'] = $_POST['kode'];
 		$data['nomor'] = $_POST['nomor'];
 		$data['ukuran'] = $_POST['ukuran'];
+		$data['jam_ip'] = $_POST['jam_ip'];
+		$data['jam_periksa'] = $_POST['jam_periksa'];
+		$data['uraian'] = $_POST['uraian'];
+		$data['pemeriksa'] = $_POST['pemeriksa'];
 		$ret = $this->pemeriksaan->update($data);
+	}
+
+	function sppb($no)
+	{
+		$this->pemeriksaan->sppb($no);
+		
+		if(isset($_GET['back_url'])){
+			$back_url = urldecode($_GET['back_url']);
+			redirect($back_url);
+		}
+		redirect('pemeriksaan');
 	}
 }
 

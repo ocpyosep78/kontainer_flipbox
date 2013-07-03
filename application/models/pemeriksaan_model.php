@@ -9,24 +9,31 @@ class Pemeriksaan_model extends CI_Model
 
 	function get_all_rows()
 	{
-		$kueri = "SELECT * FROM kontainer WHERE status = 1 ORDER BY tanggal,no";
+		$kueri = "SELECT * FROM kontainer WHERE status >= 1 ORDER BY tanggal,no";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
 	}
 
 	function get_rows($start, $limit)
 	{
-		$kueri = "SELECT * FROM kontainer WHERE status = 1 ORDER BY tanggal,no LIMIT $start, $limit";
+		$kueri = "SELECT * FROM kontainer WHERE status >= 1 ORDER BY tanggal,no LIMIT $start, $limit";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
 	}
 
 	function get_search_all_rows($key)
 	{
-		$tanggal = "tanggal like '%$key%' OR";
-		if($key == '-') $tanggal = "";
-		$kueri = "SELECT * FROM kontainer WHERE status = 1 AND (no like '%$key%' OR $tanggal perusahaan like '%$key%'
-				OR kode like '%$key%' OR nomor like '%$key%' OR ukuran LIKE '%$key%')
+		$keytanggal = str_replace("/", "-", $key);
+		$tanggal = "tanggal like '%$keytanggal%' OR";
+		$tanggal2 = "tanggal like '%$keytanggal%' OR";
+		if($key == '-'){
+			$tanggal = "";
+			$tgl_pib = "";
+		}
+
+		$kueri = "SELECT * FROM kontainer WHERE status >= 1 AND (no LIKE '%$key%' OR $tanggal perusahaan LIKE '%$key%'
+				OR kode LIKE '%$key%' OR nomor LIKE '%$key%' OR ukuran LIKE '%$key%' OR no_pib LIKE '%$key%' OR tgl_pib LIKE '%$tgl_pib%'
+				OR jam_ip LIKE '%$key%' OR jam_periksa LIKE '%$key%' OR uraian LIKE '%$key%' OR pemeriksa LIKE '%$key%')
 				ORDER BY tanggal,no";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
@@ -34,10 +41,17 @@ class Pemeriksaan_model extends CI_Model
 
 	function get_search_rows($key, $start, $limit)
 	{
-		$tanggal = "tanggal like '%$key%' OR";
-		if($key == '-') $tanggal = "";
-		$kueri = "SELECT * FROM kontainer WHERE status = 1 AND (no like '%$key%' OR $tanggal perusahaan like '%$key%'
-				OR kode like '%$key%' OR nomor like '%$key%' OR ukuran LIKE '%$key%')
+		$keytanggal = str_replace("/", "-", $key);
+		$tanggal = "tanggal like '%$keytanggal%' OR";
+		$tanggal2 = "tanggal like '%$keytanggal%' OR";
+		if($key == '-'){
+			$tanggal = "";
+			$tgl_pib = "";
+		}
+
+		$kueri = "SELECT * FROM kontainer WHERE status >= 1 AND (no LIKE '%$key%' OR $tanggal perusahaan LIKE '%$key%'
+				OR kode LIKE '%$key%' OR nomor LIKE '%$key%' OR ukuran LIKE '%$key%' OR no_pib LIKE '%$key%' OR tgl_pib LIKE '%$tgl_pib%'
+				OR jam_ip LIKE '%$key%' OR jam_periksa LIKE '%$key%' OR uraian LIKE '%$key%' OR pemeriksa LIKE '%$key%')
 				ORDER BY tanggal,no LIMIT $start, $limit";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
@@ -45,25 +59,35 @@ class Pemeriksaan_model extends CI_Model
 
 	function get_row($no)
 	{
-		$kueri = "SELECT * FROM kontainer WHERE status = 1 AND no = $no";
+		$kueri = "SELECT * FROM kontainer WHERE status >= 1 AND no = $no";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
 	}
 
 	function insert($data)
 	{
-		$tanggal = $data['tanggal'];
-		$part = explode('/', $tanggal);
-		$data['tanggal'] = $part[2].'-'.$part[0].'-'.$part[1];
-		// echo $data['tanggal'];
+		$data['tanggal'] = str_replace("/", "-", $data['tanggal']);
+		$data['tgl_pib'] = str_replace("/", "-", $data['tgl_pib']);
+		
 		$this->db->insert('kontainer', $data);
+	}
+
+	function sppb($no)
+	{
+		$data['status'] = '2';
+		$this->db->where('no', $no);
+		$this->db->update('kontainer', $data); 
 	}
 
 	function update($data)
 	{
-		$tanggal = $data['tanggal'];
-		$part = explode('/', $tanggal);
-		$data['tanggal'] = $part[2].'-'.$part[0].'-'.$part[1];
+		if(isset($data['tanggal'])){
+			$data['tanggal'] = str_replace("/", "-", $data['tanggal']);
+		}
+		if(isset($data['tgl_pib'])){
+			$data['tgl_pib'] = str_replace("/", "-", $data['tgl_pib']);
+		}
+
 		$this->db->where('no', $data['no']);
 		$ret = $this->db->update('kontainer', $data); 
 		return $ret;
@@ -71,8 +95,9 @@ class Pemeriksaan_model extends CI_Model
 
 	function delete($no)
 	{
-		$kueri = "DELETE FROM kontainer WHERE no = $no";
-		$this->db->query($kueri);
+		$data['status'] = '0';
+		$this->db->where('no', $no);
+		$ret = $this->db->update('kontainer', $data); 
 	}
 
 	function get_max_page()

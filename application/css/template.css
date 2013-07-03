@@ -96,7 +96,7 @@ a:hover {
 	text-decoration:none;
 }
 
-a.edit, a.trash, a.ip, a.spbb, a.save, a.cancel, a.delete, a.unip{
+a.edit, a.trash, a.ip, a.sppb, a.save, a.cancel, a.delete, a.unip, a.sppbyes{
 	padding-left:12px;
 	background-repeat:no-repeat;
 	background-position:left center;

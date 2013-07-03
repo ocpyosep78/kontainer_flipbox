@@ -17,45 +17,22 @@
 	<body>
 		<header>
 			<?php 
-				$data['active'] = 1;
+				$data['active'] = 4;
 				$this->load->view('header', $data); 
 			?>
 		</header>
 
 		<section id="section">
 			<div id="content" class="container_16 clearfix">
-				<form method="post" action="<?=site_url('kontainer/entry')?>">
-					<div class="grid_1"><p>
-						<input name="no" type="text" placeholder="No"/>
+				<form method="post" action="<?=site_url('manajemen_pt/entry')?>">
+					<div class="grid_3"><p>
+						<input name="owner" type="text" placeholder="Nama Owner" required/>
 					</p></div>
-					<div class="grid_2"><p>
-						<input name="tanggal" type="text" id="datepicker" placeholder="Tanggal" pattern="((19|20)\d\d[/]0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])" required/>
+					<div class="grid_4"><p>
+						<input name="nama" type="text" placeholder="Nama Perusahaan" required/>
 					</p></div>
 					<div class="grid_3"><p>
-						<select name="perusahaan" required>
-							<option value='-'>[Pilih Perusahaan]</option>
-							<?php
-							foreach($list_perusahaan as $per){
-								echo "<option value='".$per['nama']."'>".$per['nama']."</option>";
-							}
-							?>
-						</select>
-					</p></div>
-					<div class="grid_2"><p>
-						<input name="kode" type="text" placeholder="Kode Kontainer" required/>
-					</p></div>
-					<div class="grid_2"><p>
-						<input name="nomor" type="text" placeholder="Nomer Kontainer" required/>
-					</p></div>
-					<div class="grid_2"><p>
-						<select id="in_ukuran" name="ukuran">
-							<option value='-'>[Pilih Ukuran]</option>
-							<option value='10"'>10"</option>
-							<option value='20"'>20"</option>
-							<option value='40"'>40"</option>
-							<option value='50"'>50"</option>
-							<option value='60"'>60"</option>
-						</select>
+						<input name="kode" type="text" placeholder="Kode Perusahaan" required/>
 					</p></div>
 					<div class="grid_1"><p>
 						<input name="fun" type="hidden" value="<?php if(isset($key)) echo $key; else echo 'page';?>"/>
@@ -67,7 +44,7 @@
 				<div class="grid_9">
 					<p>&nbsp;</p>
 				</div>
-				<form method='POST' action='<?=base_url();?>kontainer/search'>
+				<form method='POST' action='<?=base_url();?>manajemen_pt/search'>
 					<div class="grid_4">
 						<p>
 							<input type="text" name='search' placeholder="Search Table"/>
@@ -89,49 +66,35 @@
 				<div class="grid_16">
 					<table id="dataList" clas="tablesorter">
 						<colgroup>
-							<col class="colA" style="width:15px; word-wrap:break-word;"/>
-							<col class="colB" style="width:70px; word-wrap:break-word;"/>
-							<col class="colC" style="width:130px; word-wrap:break-word;"/>
-							<col class="colD" style="width:70px; word-wrap:break-word;"/>
-							<col class="colE" style="width:70px; word-wrap:break-word;"/>
-							<col class="colF" style="width:70px; word-wrap:break-word;"/>
-							<col class="colG" style="width:20px; word-wrap:break-word;"/>
-							<col class="colH" style="width:20px; word-wrap:break-word;"/>
-							<col class="colI" style="width:20px; word-wrap:break-word;"/>
+							<col class="colA" style="width:80px; word-wrap:break-word;"/>
+							<col class="colC" style="width:280px; word-wrap:break-word;"/>
+							<col class="colD" style="width:310px; word-wrap:break-word;"/>
+							<col class="colE" style="width:200px; word-wrap:break-word;"/>
+							<col class="colG" style="width:30px; word-wrap:break-word;"/>
+							<col class="colH" style="width:40px; word-wrap:break-word;"/>
 						</colgroup>
 						<thead>
 							<tr>
 								<th>No.</th>
-								<th class='center'>Tanggal</th>
-								<th>Perusahaan</th>
-								<th>Kode Kontainer</th>
-								<th>No. Kontainer</th>
-								<th class='center'>Ukuran</th>
-								<th class='center' colspan="3" width="10%">Actions</th>
+								<th>Nama Owner</th>
+								<th>Nama Perusahaan</th>
+								<th>Kode Perusahaan</th>
+								<th class='center' colspan="2" width="10%">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php
 							foreach($rows as $row){
 								extract($row);
-								$tanggal = str_replace("-", "/", $tanggal);
 
 								echo "
 									<tr>
 										<td id='col_no_$no' style='text-align:left;'>$no</td>
-										<td id='col_tanggal_$no' class='center'>$tanggal</td>
-										<td id='col_perusahaan_$no'>$perusahaan</td>
+										<td id='col_owner_$no'>$owner</td>
+										<td id='col_nama_$no'>$nama</td>
 										<td id='col_kode_$no'>$kode</td>
-										<td id='col_nomor_$no'>$nomor</td>
-										<td id='col_ukuran_$no' class='center'>$ukuran</td>
-										<td id='col_ip_$no' class='center'>";
-			   	if($status == '0') echo 	"<a href='#ip_row' class='ip ip_button' no='$no'></a></td>"; 
-				else echo 					"<a href='#' class='unip'></a></td>";
-				echo "					<td id='col_edit_$no' class='center'><a href='#' onclick=\"edit_row('$no')\" class='edit'></a></td>
+										<td id='col_edit_$no' class='center'><a href='#' onclick=\"edit_row('$no')\" class='edit'></a></td>
 										<td id='col_delete_$no' class='center'><a href='#' onclick=\"confirm_delete_row('$no')\" class='trash'></a></td>
-									</tr>
-									<tr style='display:none'>
-										<td id='col_status_$no'>$status</td>
 									</tr>
 								";
 							}
@@ -146,8 +109,8 @@
 										$next = $page+1;
 
 										if($maxpage > 10 && $page > 5){
-											if(isset($key)) echo "<a href='".base_url()."kontainer/search?key=$key&page=$prev' class='curved'>Prev</a>";
-											else echo "<a href='".base_url()."kontainer/page/$prev' class='curved'>Prev</a>";
+											if(isset($key)) echo "<a href='".base_url()."manajemen_pt/search?key=$key&page=$prev' class='curved'>Prev</a>";
+											else echo "<a href='".base_url()."manajemen_pt/page/$prev' class='curved'>Prev</a>";
 										}
 
 										$st = $page-4;
@@ -162,47 +125,21 @@
 										for($i = $st; $i <= $en; $i++){
 											if($i == $page) echo "<span class='active curved'>$i</span>";
 											else{
-												if(isset($key)) echo "<a href='".base_url()."kontainer/search?key=$key&page=$i' class='curved'>$i</a>";
-												else echo "<a href='".base_url()."kontainer/page/$i' class='curved'>$i</a>";
+												if(isset($key)) echo "<a href='".base_url()."manajemen_pt/search?key=$key&page=$i' class='curved'>$i</a>";
+												else echo "<a href='".base_url()."manajemen_pt/page/$i' class='curved'>$i</a>";
 											}
 										}
 
 										if($maxpage > 10 && $page+5 < $maxpage){
-											if(isset($key)) echo "<a href='".base_url()."kontainer/search?key=$key&page=$next' class='curved'>Next</a>";
-											else echo "<a href='".base_url()."kontainer/page/$next' class='curved'>Next</a>";
+											if(isset($key)) echo "<a href='".base_url()."manajemen_pt/search?key=$key&page=$next' class='curved'>Next</a>";
+											else echo "<a href='".base_url()."manajemen_pt/page/$next' class='curved'>Next</a>";
 										}
 									?>
 								</td>
 							</tr>
 						</tfoot>
 					</table>
-				</div>
-
-				<div id="ip_hider" style="display:none;">
-					<div id="ip_row">
-						<div class="grid_2"><p>
-							<input id="ip_no_pib" type="text" placeholder="No. PIB"/>
-						</p></div>
-						<div class="grid_2"><p>
-							<input id="ip_tgl_pib" type="text" class="datepicker3" placeholder="Tgl PIB"/>
-						</p></div>
-						<div class="grid_2"><p>
-							<input id="ip_jam_ip" type="text" placeholder="Jam IP"/>
-						</p></div>
-						<div class="grid_2"><p>
-							<input id="ip_jam_periksa" type="text" placeholder="Jam Periksa"/>
-						</p></div>
-						<div class="grid_2"><p>
-							<input id="ip_uraian" type="text" placeholder="Uraian Barang"/>
-						</p></div>
-						<div class="grid_2"><p>
-							<input id="ip_pemeriksa" type="text" placeholder="Pemeriksa"/>
-						</p></div>
-						<div class="grid_1"><p>
-							<input id="ip_submit" type="submit" value="IP"/>
-						</p></div>
-					</div>
-				</div>
+				</div>`
 			</div>
 		</section>
 
@@ -340,7 +277,7 @@
 			ajax: '1'
 		};
 
-		var parts = form_data.tanggal.split("/");
+		var parts = form_data.tanggal.split("/")
 		var thn = parseInt(parts[0]);
 		var bln = parseInt(parts[1]);
 		var tgl = parseInt(parts[2]);
