@@ -25,15 +25,15 @@ class Pemeriksaan_model extends CI_Model
 	{
 		$keytanggal = str_replace("/", "-", $key);
 		$tanggal = "tanggal like '%$keytanggal%' OR";
-		$tanggal2 = "tanggal like '%$keytanggal%' OR";
+		$tgl_pib = "tanggal like '%$keytanggal%' OR";
 		if($key == '-'){
 			$tanggal = "";
 			$tgl_pib = "";
 		}
 
 		$kueri = "SELECT * FROM kontainer WHERE status >= 1 AND (no LIKE '%$key%' OR $tanggal perusahaan LIKE '%$key%'
-				OR kode LIKE '%$key%' OR nomor LIKE '%$key%' OR ukuran LIKE '%$key%' OR no_pib LIKE '%$key%' OR tgl_pib LIKE '%$tgl_pib%'
-				OR jam_ip LIKE '%$key%' OR jam_periksa LIKE '%$key%' OR uraian LIKE '%$key%' OR pemeriksa LIKE '%$key%')
+				OR kode LIKE '%$key%' OR nomor LIKE '%$key%' OR ukuran LIKE '%$key%' OR no_pib LIKE '%$key%' OR $tgl_pib
+				jam_ip LIKE '%$key%' OR jam_periksa LIKE '%$key%' OR uraian LIKE '%$key%' OR pemeriksa LIKE '%$key%')
 				ORDER BY tanggal,no";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
@@ -43,15 +43,15 @@ class Pemeriksaan_model extends CI_Model
 	{
 		$keytanggal = str_replace("/", "-", $key);
 		$tanggal = "tanggal like '%$keytanggal%' OR";
-		$tanggal2 = "tanggal like '%$keytanggal%' OR";
+		$tgl_pib = "tanggal like '%$keytanggal%' OR";
 		if($key == '-'){
 			$tanggal = "";
 			$tgl_pib = "";
 		}
 
 		$kueri = "SELECT * FROM kontainer WHERE status >= 1 AND (no LIKE '%$key%' OR $tanggal perusahaan LIKE '%$key%'
-				OR kode LIKE '%$key%' OR nomor LIKE '%$key%' OR ukuran LIKE '%$key%' OR no_pib LIKE '%$key%' OR tgl_pib LIKE '%$tgl_pib%'
-				OR jam_ip LIKE '%$key%' OR jam_periksa LIKE '%$key%' OR uraian LIKE '%$key%' OR pemeriksa LIKE '%$key%')
+				OR kode LIKE '%$key%' OR nomor LIKE '%$key%' OR ukuran LIKE '%$key%' OR no_pib LIKE '%$key%' OR $tgl_pib
+				jam_ip LIKE '%$key%' OR jam_periksa LIKE '%$key%' OR uraian LIKE '%$key%' OR pemeriksa LIKE '%$key%')
 				ORDER BY tanggal,no LIMIT $start, $limit";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;

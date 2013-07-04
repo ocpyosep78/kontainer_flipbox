@@ -95,12 +95,29 @@ class Pemeriksaan extends CI_Controller
 	function sppb($no)
 	{
 		$this->pemeriksaan->sppb($no);
-		
+
 		if(isset($_GET['back_url'])){
 			$back_url = urldecode($_GET['back_url']);
 			redirect($back_url);
 		}
 		redirect('pemeriksaan');
+	}
+
+	function download_xls()
+	{
+		if(!isset($_GET['key'])){
+			$data['filename'] = "pemeriksaan.xls";
+			$data['headers'] = Array("No.", "Tanggal", "Perusahaan", "No. PIB", "Tgl PIB", "Kode Kontainer", "No. Kontainer", "Ukuran", "Jam IP", "Jam Periksa", "Uraian Barang", "Pemeriksa");	
+			$data['row_keys'] = Array("no", "tanggal", "perusahaan", "no_pib", "tgl_pib", "kode", "nomor", "ukuran", "jam_ip", "jam_periksa", "uraian", "pemeriksa");
+			$data['rows'] = $this->pemeriksaan->get_all_rows();
+		}else{
+			$key = $_GET['key'];
+			$data['filename'] = "pemeriksaan_search=$key.xls";
+			$data['headers'] = Array("No.", "Tanggal", "Perusahaan", "No. PIB", "Tgl PIB", "Kode Kontainer", "No. Kontainer", "Ukuran", "Jam IP", "Jam Periksa", "Uraian Barang", "Pemeriksa");	
+			$data['row_keys'] = Array("no", "tanggal", "perusahaan", "no_pib", "tgl_pib", "kode", "nomor", "ukuran", "jam_ip", "jam_periksa", "uraian", "pemeriksa");
+			$data['rows'] = $this->pemeriksaan->get_search_all_rows($key);
+		}
+		$this->load->view('download_xls', $data);
 	}
 }
 

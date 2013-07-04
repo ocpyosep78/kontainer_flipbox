@@ -102,6 +102,23 @@ class Kontainer extends CI_Controller
 		$data['ukuran'] = $_POST['ukuran'];
 		$ret = $this->kontainer->update($data);
 	}
+
+	function download_xls()
+	{
+		if(!isset($_GET['key'])){
+			$data['filename'] = "kontainer_masuk.xls";
+			$data['headers'] = Array("No.", "Tanggal", "Perusahaan", "Kode Kontainer", "No. Kontainer", "Ukuran");	
+			$data['row_keys'] = Array("no", "tanggal", "perusahaan", "kode", "nomor", "ukuran");
+			$data['rows'] = $this->kontainer->get_all_rows();
+		}else{
+			$key = $_GET['key'];
+			$data['filename'] = "kontainer_masuk_search=$key.xls";
+			$data['headers'] = Array("No.", "Tanggal", "Perusahaan", "Kode Kontainer", "No. Kontainer", "Ukuran");	
+			$data['row_keys'] = Array("no", "tanggal", "perusahaan", "kode", "nomor", "ukuran");
+			$data['rows'] = $this->kontainer->get_search_all_rows($key);
+		}
+		$this->load->view('download_xls', $data);
+	}
 }
 
 

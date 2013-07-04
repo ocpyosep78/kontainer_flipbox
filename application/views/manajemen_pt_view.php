@@ -59,7 +59,12 @@
 				</form>
 				<div class="grid_1">
 					<p>
-						<button class="error">Download</button>
+						<?php
+						$download_url = base_url()."manajemen_pt/download_xls";
+						if(isset($key)) $download_url .= "?key=$key";
+						?>
+
+						<a href='<?=$download_url;?>' class='error'>Download</a>
 					</p>
 				</div>
 

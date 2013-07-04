@@ -78,6 +78,23 @@ class Manajemen_pt extends CI_Controller
 		$data['kode'] = $_POST['kode'];
 		$ret = $this->perusahaan->update($data);
 	}
+
+	function download_xls()
+	{
+		if(!isset($_GET['key'])){
+			$data['filename'] = "manajemen_pt.xls";
+			$data['headers'] = Array("No.", "Nama Owner", "Nama Perusahaan", "Kode Perusahaan");	
+			$data['row_keys'] = Array("no", "owner", "nama", "kode");
+			$data['rows'] = $this->perusahaan->get_all_rows();
+		}else{
+			$key = $_GET['key'];
+			$data['filename'] = "manajemen_pt_search=$key.xls";
+			$data['headers'] = Array("No.", "Nama Owner", "Nama Perusahaan", "Kode Perusahaan");	
+			$data['row_keys'] = Array("no", "owner", "nama", "kode");
+			$data['rows'] = $this->perusahaan->get_search_all_rows($key);
+		}
+		$this->load->view('download_xls', $data);
+	}
 }
 
 
