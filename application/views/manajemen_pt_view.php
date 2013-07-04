@@ -35,6 +35,7 @@
 						<input name="kode" type="text" placeholder="Kode Perusahaan" required/>
 					</p></div>
 					<div class="grid_1"><p>
+						<input name="no" type="hidden" value="<?=count($rows)+1;?>"/>
 						<input name="fun" type="hidden" value="<?php if(isset($key)) echo $key; else echo 'page';?>"/>
 						<input type="submit" value="Submit"/>
 					</p></div>
@@ -161,185 +162,69 @@
 
 	$(document).ready(function(){ 
         $("#dataList").tablesorter(); 
-
-        $("a.ip_button").fancybox({
-			overlayShow	: true,
-			transitionIn : 'elastic',
-			transitionOut : 'elastic',
-			showCloseButton : false,
-			onComplete : function(links, index){
-				var $self = $(links[index]);  
-		      	var no = $self.attr('no');  
-		      	ip_row(no);
-			},
-			onClosed : function(){
-				$("#ip_no_pib").val("");
-				$("#ip_tgl_pib").val("");
-				$("#ip_jam_ip").val("");
-				$("#ip_jam_periksa").val("");
-				$("#ip_uraian").val("");
-				$("#ip_pemeriksa").val("");
-			}
-		});
 	});
-
-	$(function(){
-		$("#datepicker").datepicker();
-		$("#datepicker2").datepicker();
-		$(".datepicker3").datepicker();
-	});
-
-	function ip_row(no)
-	{
-		$(".datepicker3").datepicker();
-		var fun = function(){
-			ip_submit(no);
-		}
-		$("#ip_submit").attr("onclick", "").click(fun);
-	}
-
-	function ip_submit(no)
-	{
-		var no_pib = $("#ip_no_pib").val();
-		var tgl_pib = $("#ip_tgl_pib").val();
-		var jam_ip = $("#ip_jam_ip").val();
-		var jam_periksa = $("#ip_jam_periksa").val();
-		var uraian = $("#ip_uraian").val();
-		var pemeriksa = $("#ip_pemeriksa").val();
-
-		<?php
-		$back_url = urlencode(base_url()."kontainer/page/".$page);
-		if(isset($key)) $back_url = urlencode(base_url()."kontainer/search?key=".$key."&page=".$page);
-		?>
-
-		document.location = "<?=base_url();?>kontainer/ip/"+no+"?no_pib="+no_pib+"&tgl_pib="+tgl_pib+"&jam_ip="+jam_ip+"&jam_periksa="+jam_periksa+"&uraian="+uraian+"&pemeriksa="+pemeriksa+"&back_url=<?=$back_url;?>";
-	}
 
 	function edit_row(no)
 	{
-		var val_tanggal = $("#col_tanggal_"+no).html();
-		var val_perusahaan = $("#col_perusahaan_"+no).html();
+		var val_owner = $("#col_owner_"+no).html();
+		var val_nama = $("#col_nama_"+no).html();
 		var val_kode = $("#col_kode_"+no).html();
-		var val_nomor = $("#col_nomor_"+no).html();
-		var val_ukuran = $("#col_ukuran_"+no).html();
-		var val_status = $("#col_status_"+no).html();
 
-		val_ukuran = val_ukuran.replace("\"","");
-
-		var input_tanggal = "<input id='input_tanggal_"+no+"' name='tanggal' type='text' class='datepicker_"+no+"' value='"+val_tanggal+"' style='width:65px; height:14px; vertical-align:middle;'/>";
-		var input_perusahaan = "<select id='input_perusahaan_"+no+"' name='perusahaan' style='width:150px; height:25px; vertical-align:middle;'> <option value='-'>[Pilih Perusahaan]</option>" + 
-									<?php
-									echo "\"";
-									foreach($list_perusahaan as $per){
-										$nama = $per['nama'];
-										echo "<option value='$nama'>$nama</option>";
-									}
-									echo "\"";
-									?>
-								+ "</select>";
-		var input_kode = "<input id='input_kode_"+no+"' name='kode' type='text' value='"+val_kode+"' style='width:100px; height:14px; vertical-align:middle;'/>";
-		var input_nomor = "<input id='input_nomor_"+no+"' name='nomor' type='text' value='"+val_nomor+"' style='width:100px; height:14px; vertical-align:middle;'/>";
-		var input_ukuran = "<select id='input_ukuran_"+no+"' name='ukuran' style='width:60px; height:25px; vertical-align:middle; text-align:center;'>" +
-								"<option value='-'>[Pilih Ukuran]</option>" +
-								"<option value='10\"'>10\"</option>" +
-								"<option value='20\"'>20\"</option>" +
-								"<option value='40\"'>40\"</option>" +
-								"<option value='50\"'>50\"</option>" +
-								"<option value='60\"'>60\"</option>" +
-							"</select>";
+		var input_owner = "<input id='input_owner_"+no+"' name='owner' type='text' value='"+val_owner+"' style='width:220px; height:14px; vertical-align:middle;'/>";
+		var input_nama = "<input id='input_nama_"+no+"' name='nama' type='text' value='"+val_nama+"' style='width:250px; height:14px; vertical-align:middle;'/>";
+		var input_kode = "<input id='input_kode_"+no+"' name='kode' type='text' value='"+val_kode+"' style='width:150px; height:14px; vertical-align:middle;'/>";		
 		var save_button = "<a href='#' onclick=\"save_row('"+no+"')\" class='save'></a>";
-		var cancel_button = "<a href='#' onclick=\"cancel_row('"+no+"','"+val_tanggal+"','"+val_perusahaan+"','"+val_kode+"','"+val_nomor+"','"+val_ukuran+"','"+val_status+"')\" class='cancel'></a>";
+		var cancel_button = "<a href='#' onclick=\"cancel_row('"+no+"','"+val_owner+"','"+val_nama+"','"+val_kode+"')\" class='cancel'></a>";
 		
-		$("#col_tanggal_"+no).html(input_tanggal);
-		$("#col_perusahaan_"+no).html(input_perusahaan);
+		$("#col_owner_"+no).html(input_owner);
+		$("#col_nama_"+no).html(input_nama);
 		$("#col_kode_"+no).html(input_kode);
-		$("#col_nomor_"+no).html(input_nomor);
-		$("#col_ukuran_"+no).html(input_ukuran);
-		$("#col_ip_"+no).html(save_button);
-		$("#col_edit_"+no).html(cancel_button);
-		$("#col_delete_"+no).html("");
-
-		$("#dataList tr").css('height', '32px');
-		$(".datepicker_"+no).datepicker();
-		$("#input_ukuran_"+no).val(val_ukuran+"\"");
-		$("#input_perusahaan_"+no).val(val_perusahaan);
+		$("#col_edit_"+no).html(save_button);
+		$("#col_delete_"+no).html(cancel_button);
 	}
 
 	function save_row(no)
 	{
 		var form_data = {
 			no: no,
-			tanggal: $("#input_tanggal_"+no).val(),
-			perusahaan: $("#input_perusahaan_"+no).val(),
+			owner: $("#input_owner_"+no).val(),
+			nama: $("#input_nama_"+no).val(),
 			kode: $("#input_kode_"+no).val(),
-			nomor: $("#input_nomor_"+no).val(),
-			ukuran: $("#input_ukuran_"+no).val(),
 			ajax: '1'
 		};
 
-		var parts = form_data.tanggal.split("/")
-		var thn = parseInt(parts[0]);
-		var bln = parseInt(parts[1]);
-		var tgl = parseInt(parts[2]);
-
-		if(bln >= 1 && bln <= 12 && tgl >= 1 && tgl <= 31 && thn >= 1900 && thn <= 2999){
-			$.ajax({
-				url: "<?=site_url('kontainer/update');?>",
-				type: "POST",
-				data: form_data,
-				success: function(){
-					var status = $("#col_status_"+no).html();
-
-					$("#col_tanggal_"+no).html($("#input_tanggal_"+no).val());
-					$("#col_perusahaan_"+no).html($("#input_perusahaan_"+no).val());
-					$("#col_kode_"+no).html($("#input_kode_"+no).val());
-					$("#col_nomor_"+no).html($("#input_nomor_"+no).val());
-					$("#col_ukuran_"+no).html($("#input_ukuran_"+no).val());
-					if(status == '0') $("#col_ip_"+no).html("<a href='#ip_row' class='ip ip_button' no='$no'></a></td>");
-					else $("#col_ip_"+no).html("<a href='#' class='unip' no='$no'></a></td>");
-					$("#col_edit_"+no).html("<a href='#' onclick=\"edit_row('"+no+"')\" class='edit'></a>");
-					$("#col_delete_"+no).html("<a href='#' onclick=\"confirm_delete_row('"+no+"')\" class='trash'></a>");
-				}
-			});
-		}else{
-			alert("Invalid Date!");
-		}
-	}
-
-	function cancel_row(no, tanggal, perusahaan, kode, nomor, ukuran, status)
-	{
-		$("#col_tanggal_"+no).html(tanggal);
-		$("#col_perusahaan_"+no).html(perusahaan);
-		$("#col_kode_"+no).html(kode);
-		$("#col_nomor_"+no).html(nomor);
-		$("#col_ukuran_"+no).html(ukuran + "\"");
-		if(status == '0') $("#col_ip_"+no).html("<a href='#ip_row' class='ip ip_button' no='$no'></a></td>");
-		else $("#col_ip_"+no).html("<a href='#' class='unip' no='$no'></a></td>");
-		$("#col_edit_"+no).html("<a href='#' onclick=\"edit_row('"+no+"')\" class='edit'></a>");
-		$("#col_delete_"+no).html("<a href='#' onclick=\"confirm_delete_row('"+no+"')\" class='trash'></a>");
-
-		$("a.ip_button").fancybox({
-			overlayShow	: true,
-			transitionIn : 'elastic',
-			transitionOut : 'elastic',
-			showCloseButton : false,
-			onStart : function(links, index){
-				var $self = $(links[index]);  
-		      	var no = $self.attr('no');  
-		      	ip_row(no);
+		$.ajax({
+			url: "<?=site_url('manajemen_pt/update');?>",
+			type: "POST",
+			data: form_data,
+			success: function(){
+				$("#col_owner_"+no).html($("#input_owner_"+no).val());
+				$("#col_nama_"+no).html($("#input_nama_"+no).val());
+				$("#col_kode_"+no).html($("#input_kode_"+no).val());
+				$("#col_edit_"+no).html("<a href='#' onclick=\"edit_row('"+no+"')\" class='edit'></a>");
+				$("#col_delete_"+no).html("<a href='#' onclick=\"confirm_delete_row('"+no+"')\" class='trash'></a>");
 			}
 		});
+	}
+
+	function cancel_row(no, owner, nama, kode)
+	{
+		$("#col_owner_"+no).html(owner);
+		$("#col_nama_"+no).html(nama);
+		$("#col_kode_"+no).html(kode);
+		$("#col_edit_"+no).html("<a href='#' onclick=\"edit_row('"+no+"')\" class='edit'></a>");
+		$("#col_delete_"+no).html("<a href='#' onclick=\"confirm_delete_row('"+no+"')\" class='trash'></a>");
 	}
 
 	function confirm_delete_row(no)
 	{
 		if(confirm('Apakah anda yakin?')){
 			<?php
-			$back_url = urlencode(base_url()."kontainer/page/".$page);
-			if(isset($key)) $back_url = urlencode(base_url()."kontainer/search?key=".$key."&page=".$page);
+			$back_url = urlencode(base_url()."manajemen_pt/page/".$page);
+			if(isset($key)) $back_url = urlencode(base_url()."manajemen_pt/search?key=".$key."&page=".$page);
 			?>
 
-			document.location = "<?=base_url();?>kontainer/delete/"+no+"?back_url=<?=$back_url;?>";
+			document.location = "<?=base_url();?>manajemen_pt/delete/"+no+"?back_url=<?=$back_url;?>";
 		}
 	}
 
