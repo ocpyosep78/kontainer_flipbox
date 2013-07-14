@@ -9,8 +9,19 @@ class Pemeriksa_model extends CI_Model
 
 	function get_all_pemeriksa()
 	{
-		$kueri = "SELECT nama FROM pemeriksa ORDER BY id";
+		$kueri = "SELECT * FROM pemeriksa ORDER BY no";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
+	}
+
+	function insert($data)
+	{
+		$this->db->insert('pemeriksa', $data);
+	}
+
+	function delete($no)
+	{
+		$kueri = "DELETE FROM pemeriksa WHERE no = $no";
+		$this->db->query($kueri);
 	}
 }

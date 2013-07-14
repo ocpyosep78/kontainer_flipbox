@@ -13,7 +13,7 @@
 		<script src="<?=base_url();?>application/js/jquery-1.4.2.js" type="text/javascript"></script>
 		<script src="<?=base_url();?>application/js/jquery-ui-1.8.1.js" type="text/javascript"></script>
 		<script src="<?=base_url();?>application/js/jquery.tablesorter.js" type="text/javascript"></script>
-		<script src="<?=base_url();?>application/js/jqtp_latest/js/jQuery.jqtp.min.js" type="text/javascript"></script>
+		<script src="<?=base_url();?>application/js/jqtp_latest/js/jquery.jqtp.min.js" type="text/javascript"></script>
 		<script src="<?=base_url();?>application/js/jqtp_latest/js/jquery.bgiframe.min.js" type="text/javascript"></script>
 		<script src="<?=base_url();?>application/js/jqtp_latest/js/jqDnR.min.js" type="text/javascript"></script>
 		<script src="<?=base_url();?>application/js/jqtp_latest/js/jquery.jqpopup.min.js" type="text/javascript"></script>

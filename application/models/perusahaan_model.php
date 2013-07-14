@@ -82,10 +82,20 @@ class Perusahaan_model extends CI_Model
 
 	function get_xls_rows()
 	{
-		$kueri = "SELECT P.no,owner,nama,P.kode,count(*) as jml_kontainer
+		$kueri = "SELECT P.no,owner,count(*) as jml_kontainer
 				  FROM perusahaan P INNER JOIN kontainer K ON P.kode = K.perusahaan
-				  GROUP BY kode ORDER BY no";
+				  GROUP BY owner ORDER BY no";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
+	}
+
+	function get_jumlah_kontainer_ukuran($owner, $ukuran)
+	{
+		$kueri = "SELECT P.no,owner,count(*) as jml_peruk
+				  FROM perusahaan P INNER JOIN kontainer K ON P.kode = K.perusahaan WHERE ukuran='$ukuran' AND owner='$owner'
+				  GROUP BY owner ORDER BY no";
+		$ret = $this->db->query($kueri)->result_array();
+		if(count($ret) == 0) return 0;
+		return $ret[0]['jml_peruk'];
 	}
 }

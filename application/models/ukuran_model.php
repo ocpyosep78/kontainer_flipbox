@@ -9,8 +9,19 @@ class Ukuran_model extends CI_Model
 
 	function get_all_ukuran()
 	{
-		$kueri = "SELECT ukuran FROM ukuran ORDER BY id";
+		$kueri = "SELECT * FROM ukuran ORDER BY no";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
+	}
+
+	function insert($data)
+	{
+		$this->db->insert('ukuran', $data);
+	}
+
+	function delete($no)
+	{
+		$kueri = "DELETE FROM ukuran WHERE no = $no";
+		$this->db->query($kueri);
 	}
 }

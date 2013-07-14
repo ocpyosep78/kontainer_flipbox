@@ -6,6 +6,7 @@ class Manajemen_pt extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('perusahaan_model', 'perusahaan', true);
+		$this->load->model('ukuran_model', 'ukuran', true);
 	}
 
 	function index()
@@ -82,11 +83,25 @@ class Manajemen_pt extends CI_Controller
 	function download_xls()
 	{
 		$data['flag'] = 3;
-		$data['filename'] = "3. Rekap Daftar Perusahaan.xls";
-		$data['row_keys'] = Array("no", "owner", "nama", "kode", "jml_kontainer");
+		$data['filename'] = "3. Rekap Owner Perusahaan & Jumlah Kontainer.xls";
 		$data['rows'] = $this->perusahaan->get_xls_rows();
+		$data['list_ukuran'] = $this->ukuran->get_all_ukuran();
+		$data['kontainer_per_ukuran'] = $this->get_kontainer_per_ukuran($data['rows'], $data['list_ukuran']);
 		
 		$this->load->view('download_xls', $data);
+	}
+
+	function get_kontainer_per_ukuran($rows, $list_ukuran)
+	{
+		$ret;
+		foreach($rows as $row){
+			$owner = $row['owner'];
+			foreach($list_ukuran as $ukuran){
+				$ukuran = $ukuran['ukuran'];
+				$ret[$owner][$ukuran] = $this->perusahaan->get_jumlah_kontainer_ukuran($owner,$ukuran);
+			}
+		}
+		return $ret;
 	}
 }
 
