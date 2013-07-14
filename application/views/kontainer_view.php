@@ -135,7 +135,7 @@
 								$difsecs = $t_today - $t_tanggal;
 								$difday = $difsecs / (24*60*60) + 1;
 
-								if($difday >= 30) echo "<tr style='color:red; font-weight:bold;'>";
+								if($difday >= 30 && $status == 0) echo "<tr style='color:red; font-weight:bold;'>";
 								else echo "<tr>";
 
 								echo "
