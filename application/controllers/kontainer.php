@@ -84,6 +84,7 @@ class Kontainer extends CI_Controller
 		if(isset($uraian) && $uraian != "") $data['uraian'] = $uraian;
 		if(isset($pemeriksa) && $pemeriksa != "") $data['pemeriksa'] = $pemeriksa;
 		if(isset($tgl_sppb) && $tgl_sppb != "") $data['tgl_sppb'] = $tgl_sppb;
+		$data['tgl_ip'] = date("Y-m-d");
 
 		$this->kontainer->update($data);
 
@@ -117,10 +118,10 @@ class Kontainer extends CI_Controller
 	{
 		$data['flag'] = 1;
 		$data['filename'] = "1. Situasi Kontainer Masuk.xls";
-		$data['row_keys'] = Array("no", "tanggal", "perusahaan", "kode", "nomor", "ukuran", "uraian", "tgl_pib", "tgl_sppb");
+		$data['row_keys'] = Array("no", "tanggal", "perusahaan", "kode", "nomor", "ukuran", "uraian", "tgl_ip", "tgl_sppb");
 		$data['rows'] = $this->kontainer->get_xls_rows();
 		$data['list_ukuran'] = $this->ukuran->get_all_ukuran();
-		
+
 		$this->load->view('download_xls', $data);
 	}
 }

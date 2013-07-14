@@ -95,7 +95,7 @@ class Kontainer_model extends CI_Model
 
 	function get_xls_rows()
 	{
-		$kueri = "SELECT no,tanggal,perusahaan,kode,nomor,ukuran,uraian,tgl_pib,tgl_sppb FROM kontainer ORDER BY tanggal,no";
+		$kueri = "SELECT no,tanggal,perusahaan,kode,nomor,ukuran,uraian,tgl_ip,tgl_sppb FROM kontainer ORDER BY tanggal,no";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
 	}
