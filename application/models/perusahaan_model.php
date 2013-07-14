@@ -9,7 +9,7 @@ class Perusahaan_model extends CI_Model
 
 	function get_all_perusahaan()
 	{
-		$kueri = "SELECT nama FROM perusahaan ORDER BY no";
+		$kueri = "SELECT kode FROM perusahaan ORDER BY no";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
 	}
@@ -78,5 +78,14 @@ class Perusahaan_model extends CI_Model
 	{
 		$numrows = count($this->get_search_all_rows($key));
 		return intval(($numrows-1)/30) + 1;
+	}
+
+	function get_xls_rows()
+	{
+		$kueri = "SELECT P.no,owner,nama,P.kode,count(*) as jml_kontainer
+				  FROM perusahaan P INNER JOIN kontainer K ON P.kode = K.perusahaan
+				  GROUP BY kode ORDER BY no";
+		$ret = $this->db->query($kueri)->result_array();
+		return $ret;
 	}
 }

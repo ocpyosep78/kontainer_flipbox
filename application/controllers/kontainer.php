@@ -7,12 +7,16 @@ class Kontainer extends CI_Controller
 		parent::__construct();
 		$this->load->model('kontainer_model', 'kontainer', true);
 		$this->load->model('perusahaan_model', 'perusahaan', true);
+		$this->load->model('ukuran_model', 'ukuran', true);
+		$this->load->model('pemeriksa_model', 'pemeriksa', true);
 	}
 
 	function index()
 	{
 		$data['rows'] = $this->kontainer->get_rows(0, 30);
 		$data['list_perusahaan'] = $this->perusahaan->get_all_perusahaan();
+		$data['list_ukuran'] = $this->ukuran->get_all_ukuran();
+		$data['list_pemeriksa'] = $this->pemeriksa->get_all_pemeriksa();
 		$data['maxpage'] = $this->kontainer->get_max_page();
 		$data['page'] = 1;
 
@@ -25,6 +29,8 @@ class Kontainer extends CI_Controller
 
 		$data['rows'] = $this->kontainer->get_rows(30*($pg-1), 30);
 		$data['list_perusahaan'] = $this->perusahaan->get_all_perusahaan();
+		$data['list_ukuran'] = $this->ukuran->get_all_ukuran();
+		$data['list_pemeriksa'] = $this->pemeriksa->get_all_pemeriksa();
 		$data['maxpage'] = $this->kontainer->get_max_page();
 		$data['page'] = $pg;
 
@@ -45,6 +51,8 @@ class Kontainer extends CI_Controller
 		$data['key'] = $key;
 		$data['rows'] = $this->kontainer->get_search_rows($key, 30*($pg-1), 30);
 		$data['list_perusahaan'] = $this->perusahaan->get_all_perusahaan();
+		$data['list_ukuran'] = $this->ukuran->get_all_ukuran();
+		$data['list_pemeriksa'] = $this->pemeriksa->get_all_pemeriksa();
 		$data['maxpage'] = $this->kontainer->get_search_max_page($key);
 		$data['page'] = $pg;
 
@@ -68,12 +76,14 @@ class Kontainer extends CI_Controller
 		extract($_GET);
 		$data['no'] = $no;
 		$data['status'] = '1';
-		if(isset($no_pib)) $data['no_pib'] = $no_pib;
-		if(isset($tgl_pib)) $data['tgl_pib'] = $tgl_pib;
-		if(isset($jam_ip)) $data['jam_ip'] = $jam_ip;
-		if(isset($jam_periksa)) $data['jam_periksa'] = $jam_periksa;
-		if(isset($uraian)) $data['uraian'] = $uraian;
-		if(isset($pemeriksa)) $data['pemeriksa'] = $pemeriksa;
+		if(isset($no_pib) && $no_pib != "") $data['no_pib'] = $no_pib;
+		if(isset($tgl_pib) && $tgl_pib != "") $data['tgl_pib'] = $tgl_pib;
+		if(isset($jam_ip) && $jam_ip != "") $data['jam_ip'] = $jam_ip;
+		if(isset($jam_periksa_st) && $jam_periksa_st != "") $data['jam_periksa_st'] = $jam_periksa_st;
+		if(isset($jam_periksa_en) && $jam_periksa_en != "") $data['jam_periksa_en'] = $jam_periksa_en;
+		if(isset($uraian) && $uraian != "") $data['uraian'] = $uraian;
+		if(isset($pemeriksa) && $pemeriksa != "") $data['pemeriksa'] = $pemeriksa;
+		if(isset($tgl_sppb) && $tgl_sppb != "") $data['tgl_sppb'] = $tgl_sppb;
 
 		$this->kontainer->update($data);
 
@@ -105,18 +115,12 @@ class Kontainer extends CI_Controller
 
 	function download_xls()
 	{
-		if(!isset($_GET['key'])){
-			$data['filename'] = "kontainer_masuk.xls";
-			$data['headers'] = Array("No.", "Tanggal", "Perusahaan", "Kode Kontainer", "No. Kontainer", "Ukuran");	
-			$data['row_keys'] = Array("no", "tanggal", "perusahaan", "kode", "nomor", "ukuran");
-			$data['rows'] = $this->kontainer->get_all_rows();
-		}else{
-			$key = $_GET['key'];
-			$data['filename'] = "kontainer_masuk_search=$key.xls";
-			$data['headers'] = Array("No.", "Tanggal", "Perusahaan", "Kode Kontainer", "No. Kontainer", "Ukuran");	
-			$data['row_keys'] = Array("no", "tanggal", "perusahaan", "kode", "nomor", "ukuran");
-			$data['rows'] = $this->kontainer->get_search_all_rows($key);
-		}
+		$data['flag'] = 1;
+		$data['filename'] = "1. Situasi Kontainer Masuk.xls";
+		$data['row_keys'] = Array("no", "tanggal", "perusahaan", "kode", "nomor", "ukuran", "uraian", "tgl_pib", "tgl_sppb");
+		$data['rows'] = $this->kontainer->get_xls_rows();
+		$data['list_ukuran'] = $this->ukuran->get_all_ukuran();
+		
 		$this->load->view('download_xls', $data);
 	}
 }

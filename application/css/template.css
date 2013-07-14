@@ -17,12 +17,6 @@ caption {
 
 /* Common */
 
-#content {
-	margin-right:auto;
-	margin-left:auto;
-	width:1000px;
-}
-
 .login {
 	margin-left:auto;
 	margin-right:auto;
@@ -33,9 +27,12 @@ caption {
 }
 
 #content {
-	width:960px;
+	width:1270px;
 	position:relative;
-	zoom:1;
+	margin-left: auto;
+	margin-right: auto;
+	text-align:center;
+	float:center;
 }
 
 .date td a {
@@ -119,6 +116,13 @@ th, td {
 
 /* Header */
 
+#header {
+	width:1270px;
+	margin:10px auto 0 auto;
+	padding:5px 30px;
+	text-align:center;
+}
+
 #head {
 	-moz-border-radius-topright:10px;
 	border:0;
@@ -138,7 +142,7 @@ th, td {
 
 #navigation > li {
 	display:inline;
-	margin:0
+	margin:5px;
 }
 
 #navigation > li > a, #navigation > li > span {
@@ -148,6 +152,11 @@ th, td {
 }
 
 /* Content */
+
+#section {
+	width:1270px;
+	margin:auto;
+}
 
 #content {
 	padding:20px;
@@ -225,6 +234,55 @@ input[type="submit"], input[type="reset"] {
 }
 
 
+#edit_row {
+	padding-top:15px;
+	background-color:#bbb;
+	width:860px;
+	height:50px;
+}
+
+#dataList {
+	table-layout:fixed;
+	width:1230px;
+}
+
+#dataList th,td{
+	vertical-align:middle;
+}
+
+#dataList th {
+	cursor:pointer;
+}
+
+#dataList2 {
+	table-layout:fixed;
+	width:1230px;
+}
+
+#dataList2 th,td{
+	vertical-align:bottom;
+	font-size:12px;
+}
+
+#dataList2 th {
+	cursor:pointer;
+}
+
+#ip_row {
+	padding-top:15px;
+	background-color:#bbb;
+	width:990px;
+	height:50px;
+}
+
+
+a.error {
+	position:relative;
+	top:6px;
+	left:6px;
+}
+
+
 /* Datepicker */
 #ui-datepicker-div {
 	background-color: #fff;
@@ -255,44 +313,4 @@ input[type="submit"], input[type="reset"] {
 	font-size:15px;
 	margin-bottom:1px;
 	padding-left:10px;
-}
-
-#edit_row {
-	padding-top:15px;
-	background-color:#bbb;
-	width:860px;
-	height:50px;
-}
-
-#dataList {
-	table-layout:fixed;
-}
-
-#dataList th,td{
-	vertical-align:middle;
-}
-
-#dataList2 {
-	table-layout:fixed;
-	width:1200px;
-	margin-left:-130px;
-}
-
-#dataList2 th,td{
-	vertical-align:bottom;
-	font-size:12px;
-}
-
-#ip_row {
-	padding-top:15px;
-	background-color:#bbb;
-	width:770px;
-	height:50px;
-}
-
-
-a.error {
-	position:relative;
-	top:6px;
-	left:6px;
 }

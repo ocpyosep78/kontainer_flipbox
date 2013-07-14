@@ -4,18 +4,24 @@
 		<meta charset="utf-8">
 		<title>Sistem Pendataan Kontainer</title>
 
-		<link rel="stylesheet" href="<?=base_url();?>application/css/960.css" type="text/css" media="screen" charset="utf-8" />
-		<link rel="stylesheet" href="<?=base_url();?>application/css/template.css" type="text/css" media="screen" charset="utf-8" />
-		<link rel="stylesheet" href="<?=base_url();?>application/css/colour.css" type="text/css" media="screen" charset="utf-8" />
-		<link rel="stylesheet" type="text/css" href="<?=base_url();?>application/js/jquery.fancybox-1.3.4/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
-		<!--[if IE]><![if gte IE 6]><![endif]-->
+		<link rel="stylesheet" href="<?=base_url();?>application/css/960.css" type="text/css" media="screen" charset="utf-8"/>
+		<link rel="stylesheet" href="<?=base_url();?>application/css/template.css" type="text/css" media="screen" charset="utf-8"/>
+		<link rel="stylesheet" href="<?=base_url();?>application/css/colour.css" type="text/css" media="screen" charset="utf-8"/>
+		<link rel="stylesheet" href="<?=base_url();?>application/js/jquery.fancybox-1.3.4/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen"/>
+		<link rel="stylesheet" href="<?=base_url();?>application/js/jqtp_latest/css/jqtp.css" type="text/css"/>
+		<link rel="stylesheet" href="<?=base_url();?>application/js/jqtp_latest/css/jqpopup.css" type="text/css">
+		
 		<script src="<?=base_url();?>application/js/jquery-1.4.2.js" type="text/javascript"></script>
 		<script src="<?=base_url();?>application/js/jquery-ui-1.8.1.js" type="text/javascript"></script>
 		<script src="<?=base_url();?>application/js/jquery.tablesorter.js" type="text/javascript"></script>
-		<script type="text/javascript" src="<?=base_url();?>application/js/jquery.fancybox-1.3.4/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+		<script src="<?=base_url();?>application/js/jquery.fancybox-1.3.4/fancybox/jquery.fancybox-1.3.4.pack.js" type="text/javascript"></script>
+		<script src="<?=base_url();?>application/js/jqtp_latest/js/jQuery.jqtp.min.js" type="text/javascript"></script>
+		<script src="<?=base_url();?>application/js/jqtp_latest/js/jquery.bgiframe.min.js" type="text/javascript"></script>
+		<script src="<?=base_url();?>application/js/jqtp_latest/js/jqDnR.min.js" type="text/javascript"></script>
+		<script src="<?=base_url();?>application/js/jqtp_latest/js/jquery.jqpopup.min.js" type="text/javascript"></script>
 	</head>
 	<body>
-		<header>
+		<header id="header">
 			<?php 
 				$data['active'] = 1;
 				$this->load->view('header', $data); 
@@ -31,12 +37,13 @@
 					<div class="grid_2"><p>
 						<input name="tanggal" type="text" id="datepicker" placeholder="Tanggal" pattern="((19|20)\d\d[/]0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])" required/>
 					</p></div>
-					<div class="grid_3"><p>
+					<div class="grid_4"><p>
 						<select name="perusahaan" required>
 							<option value='-'>[Pilih Perusahaan]</option>
 							<?php
-							foreach($list_perusahaan as $per){
-								echo "<option value='".$per['nama']."'>".$per['nama']."</option>";
+							foreach($list_perusahaan as $perusahaan){
+								extract($perusahaan);
+								echo "<option value='$kode'>$kode</option>";
 							}
 							?>
 						</select>
@@ -47,14 +54,15 @@
 					<div class="grid_2"><p>
 						<input name="nomor" type="text" placeholder="Nomer Kontainer" required/>
 					</p></div>
-					<div class="grid_2"><p>
+					<div class="grid_3"><p>
 						<select id="in_ukuran" name="ukuran">
 							<option value='-'>[Pilih Ukuran]</option>
-							<option value='10"'>10"</option>
-							<option value='20"'>20"</option>
-							<option value='40"'>40"</option>
-							<option value='50"'>50"</option>
-							<option value='60"'>60"</option>
+							<?php
+							foreach($list_ukuran as $ukuran){
+								extract($ukuran);
+								echo "<option value='$ukuran'>$ukuran</option>";
+							}
+							?>
 						</select>
 					</p></div>
 					<div class="grid_1"><p>
@@ -64,11 +72,11 @@
 				</form>
 
 				
-				<div class="grid_9">
+				<div class="grid_14">
 					<p>&nbsp;</p>
 				</div>
 				<form method='POST' action='<?=base_url();?>kontainer/search'>
-					<div class="grid_4">
+					<div class="grid_5">
 						<p>
 							<input type="text" name='search' placeholder="Search Table"/>
 						</p>
@@ -94,12 +102,12 @@
 				<div class="grid_16">
 					<table id="dataList" clas="tablesorter">
 						<colgroup>
-							<col class="colA" style="width:15px; word-wrap:break-word;"/>
-							<col class="colB" style="width:70px; word-wrap:break-word;"/>
-							<col class="colC" style="width:130px; word-wrap:break-word;"/>
-							<col class="colD" style="width:70px; word-wrap:break-word;"/>
-							<col class="colE" style="width:70px; word-wrap:break-word;"/>
-							<col class="colF" style="width:70px; word-wrap:break-word;"/>
+							<col class="colA" style="width:20px; word-wrap:break-word;"/>
+							<col class="colB" style="width:90px; word-wrap:break-word;"/>
+							<col class="colC" style="width:120px; word-wrap:break-word;"/>
+							<col class="colD" style="width:100px; word-wrap:break-word;"/>
+							<col class="colE" style="width:100px; word-wrap:break-word;"/>
+							<col class="colF" style="width:100px; word-wrap:break-word;"/>
 							<col class="colG" style="width:20px; word-wrap:break-word;"/>
 							<col class="colH" style="width:20px; word-wrap:break-word;"/>
 							<col class="colI" style="width:20px; word-wrap:break-word;"/>
@@ -192,16 +200,32 @@
 							<input id="ip_tgl_pib" type="text" class="datepicker3" placeholder="Tgl PIB"/>
 						</p></div>
 						<div class="grid_2"><p>
-							<input id="ip_jam_ip" type="text" placeholder="Jam IP"/>
+							<input id="ip_jam_ip" type="text" placeholder="Jam IP" style="width:40px;text-align:center;"/>
 						</p></div>
+						<div class="grid_2" style="padding-top:5px;">Jam Periksa :</div>
 						<div class="grid_2"><p>
-							<input id="ip_jam_periksa" type="text" placeholder="Jam Periksa"/>
+							<input id="ip_jam_periksa_st" type="text" placeholder="Mulai" required style="width:40px;margin-left:-15px;text-align:center;"/>
+						</p></div>
+						<div class="grid_1" style="padding-top:5px;margin-left:-5px;">-</div>
+						<div class="grid_1"><p>
+							<input id="ip_jam_periksa_en" type="text" placeholder="Selesai" required style="width:44px;margin-left:-15px;text-align:center;"/>
 						</p></div>
 						<div class="grid_2"><p>
 							<input id="ip_uraian" type="text" placeholder="Uraian Barang"/>
 						</p></div>
+						<div class="grid_4" style="margin-left:20px;"><p>
+							<select id="ip_pemeriksa" style="width:140px;">
+								<option value='-'>[Pilih Pemeriksa]</option>
+								<?php
+								foreach($list_pemeriksa as $pemeriksa){
+									extract($pemeriksa);
+									echo "<option value='$nama'>$nama</option>";
+								}
+								?>
+							</select>
+						</p></div>
 						<div class="grid_2"><p>
-							<input id="ip_pemeriksa" type="text" placeholder="Pemeriksa"/>
+							<input id="ip_tgl_sppb" type="text" class="datepicker3" placeholder="Tgl SPPB"/>
 						</p></div>
 						<div class="grid_1"><p>
 							<input id="ip_submit" type="submit" value="IP"/>
@@ -210,6 +234,28 @@
 				</div>
 			</div>
 		</section>
+
+		<div id="jqtp_clockDiv" style="display:none;padding:10px;" title="Time Picker">
+		    <table>
+				<tr>
+					<td style="text-align:center;">
+						<div id="jqtp_clock"></div>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align:center;">
+						<input type="text" id="jqtp_clock_hr" style="width:20px;text-align:center;"/>:
+						<input type="text" id="jqtp_clock_min" style="width:20px;text-align:center"/>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align:center;">
+						<input type="button" id="pick" value="Pick"/>
+						<input type="button" id="now" value="Now"/>
+					</td>
+				</tr>
+		    </table>
+		</div>
 
 		<footer></footer>
 	</body>
@@ -227,8 +273,14 @@
 		$("#content .grid_5, #content .grid_6").disableSelection();
 	});
 
+	var isJqtpOpen = false;
+
 	$(document).ready(function(){ 
         $("#dataList").tablesorter(); 
+
+        $("#datepicker").datepicker();
+		$("#datepicker2").datepicker();
+		$(".datepicker3").datepicker();
 
         $("a.ip_button").fancybox({
 			overlayShow	: true,
@@ -244,17 +296,15 @@
 				$("#ip_no_pib").val("");
 				$("#ip_tgl_pib").val("");
 				$("#ip_jam_ip").val("");
-				$("#ip_jam_periksa").val("");
+				$("#ip_jam_periksa_st").val("");
+				$("#ip_jam_periksa_en").val("");
 				$("#ip_uraian").val("");
 				$("#ip_pemeriksa").val("");
+				$("#ip_tgl_sppb").val("");
+
+				if(isJqtpOpen) $("#jqtp_clockDiv").jqpopup_close(this.id);
 			}
 		});
-	});
-
-	$(function(){
-		$("#datepicker").datepicker();
-		$("#datepicker2").datepicker();
-		$(".datepicker3").datepicker();
 	});
 
 	function ip_row(no)
@@ -264,6 +314,67 @@
 			ip_submit(no);
 		}
 		$("#ip_submit").attr("onclick", "").click(fun);
+
+		$("#jqtp_clock").jqtp();
+		$("#jqtp_clock").jqtp_realtime();
+
+		$("#ip_jam_ip").focus(function() {
+			if(isJqtpOpen) $("#jqtp_clockDiv").jqpopup_close(this.id);
+			isJqtpOpen = true;
+
+			$("#ip_jam_ip").jqtp_object();
+
+			if($("#ip_jam_ip").val() == "") $("#jqtp_clock").jqtp_realtime();
+			else{
+				var tm = $("#ip_jam_ip").val().split(":");
+				$("#jqtp_clock_hr").attr("value", tm[0]);
+				$("#jqtp_clock_min").attr("value", tm[1]);
+			}
+
+			$("#jqtp_clockDiv").jqpopup_open(this.id);
+		});
+
+		$("#ip_jam_periksa_st").focus(function() {
+			if(isJqtpOpen) $("#jqtp_clockDiv").jqpopup_close(this.id);
+			isJqtpOpen = true;
+
+			$("#ip_jam_periksa_st").jqtp_object();
+
+			if($("#ip_jam_periksa_st").val() == "") $("#jqtp_clock").jqtp_realtime();
+			else{
+				var tm = $("#ip_jam_periksa_st").val().split(":");
+				$("#jqtp_clock_hr").attr("value", tm[0]);
+				$("#jqtp_clock_min").attr("value", tm[1]);
+			}
+
+			$("#jqtp_clockDiv").jqpopup_open(this.id);
+		});
+
+		$("#ip_jam_periksa_en").focus(function() {
+			if(isJqtpOpen) $("#jqtp_clockDiv").jqpopup_close(this.id);
+			isJqtpOpen = true;
+
+			$("#ip_jam_periksa_en").jqtp_object();
+
+			if($("#ip_jam_periksa_en").val() == "") $("#jqtp_clock").jqtp_realtime();
+			else{
+				var tm = $("#ip_jam_periksa_en").val().split(":");
+				$("#jqtp_clock_hr").attr("value", tm[0]);
+				$("#jqtp_clock_min").attr("value", tm[1]);
+			}
+
+			$("#jqtp_clockDiv").jqpopup_open(this.id);
+		});
+
+		$("#now").click(function(){
+			$("#jqtp_clock").jqtp_realtime();
+		});
+
+		$("#pick").click(function(){
+			$("#jqtp_clock").jqtp_getTime();
+			$("#jqtp_clockDiv").jqpopup_close(this.id);
+			isJqtpOpen = false;
+		});
 	}
 
 	function ip_submit(no)
@@ -271,16 +382,18 @@
 		var no_pib = $("#ip_no_pib").val();
 		var tgl_pib = $("#ip_tgl_pib").val();
 		var jam_ip = $("#ip_jam_ip").val();
-		var jam_periksa = $("#ip_jam_periksa").val();
+		var jam_periksa_st = $("#ip_jam_periksa_st").val();
+		var jam_periksa_en = $("#ip_jam_periksa_en").val();
 		var uraian = $("#ip_uraian").val();
 		var pemeriksa = $("#ip_pemeriksa").val();
+		var tgl_sppb = $("#ip_tgl_sppb").val();
 
 		<?php
 		$back_url = urlencode(base_url()."kontainer/page/".$page);
 		if(isset($key)) $back_url = urlencode(base_url()."kontainer/search?key=".$key."&page=".$page);
 		?>
 
-		document.location = "<?=base_url();?>kontainer/ip/"+no+"?no_pib="+no_pib+"&tgl_pib="+tgl_pib+"&jam_ip="+jam_ip+"&jam_periksa="+jam_periksa+"&uraian="+uraian+"&pemeriksa="+pemeriksa+"&back_url=<?=$back_url;?>";
+		document.location = "<?=base_url();?>kontainer/ip/"+no+"?no_pib="+no_pib+"&tgl_pib="+tgl_pib+"&jam_ip="+jam_ip+"&jam_periksa_st="+jam_periksa_st+"&jam_periksa_en="+jam_periksa_en+"&uraian="+uraian+"&pemeriksa="+pemeriksa+"&back_url=<?=$back_url;?>"+"&tgl_sppb="+tgl_sppb;
 	}
 
 	function edit_row(no)
@@ -295,26 +408,31 @@
 		val_ukuran = val_ukuran.replace("\"","");
 
 		var input_tanggal = "<input id='input_tanggal_"+no+"' name='tanggal' type='text' class='datepicker_"+no+"' value='"+val_tanggal+"' style='width:65px; height:14px; vertical-align:middle;'/>";
-		var input_perusahaan = "<select id='input_perusahaan_"+no+"' name='perusahaan' style='width:150px; height:25px; vertical-align:middle;'> <option value='-'>[Pilih Perusahaan]</option>" + 
+		var input_perusahaan = "<select id='input_perusahaan_"+no+"' name='perusahaan' style='width:150px; height:25px; vertical-align:middle;'>" +
+									"<option value='-'>[Pilih Perusahaan]</option>" + 
 									<?php
 									echo "\"";
-									foreach($list_perusahaan as $per){
-										$nama = $per['nama'];
-										echo "<option value='$nama'>$nama</option>";
+									foreach($list_perusahaan as $perusahaan){
+										extract($perusahaan);
+										echo "<option value='$kode'>$kode</option>";
 									}
 									echo "\"";
 									?>
 								+ "</select>";
 		var input_kode = "<input id='input_kode_"+no+"' name='kode' type='text' value='"+val_kode+"' style='width:100px; height:14px; vertical-align:middle;'/>";
 		var input_nomor = "<input id='input_nomor_"+no+"' name='nomor' type='text' value='"+val_nomor+"' style='width:100px; height:14px; vertical-align:middle;'/>";
-		var input_ukuran = "<select id='input_ukuran_"+no+"' name='ukuran' style='width:60px; height:25px; vertical-align:middle; text-align:center;'>" +
+		var input_ukuran = "<select id='input_ukuran_"+no+"' name='ukuran' style='width:60px; height:25px; vertical-align:middle;'>" +
 								"<option value='-'>[Pilih Ukuran]</option>" +
-								"<option value='10\"'>10\"</option>" +
-								"<option value='20\"'>20\"</option>" +
-								"<option value='40\"'>40\"</option>" +
-								"<option value='50\"'>50\"</option>" +
-								"<option value='60\"'>60\"</option>" +
-							"</select>";
+								<?php
+								echo "\"";
+								foreach($list_ukuran as $ukuran){
+									extract($ukuran);
+									$ukuran = str_replace("\"", "", $ukuran);
+									echo "<option value='$ukuran\\\"'>$ukuran\\\"</option>";
+								}
+								echo "\"";
+								?>
+							+ "</select>";
 		var save_button = "<a href='#' onclick=\"save_row('"+no+"')\" class='save'></a>";
 		var cancel_button = "<a href='#' onclick=\"cancel_row('"+no+"','"+val_tanggal+"','"+val_perusahaan+"','"+val_kode+"','"+val_nomor+"','"+val_ukuran+"','"+val_status+"')\" class='cancel'></a>";
 		
@@ -358,15 +476,39 @@
 				success: function(){
 					var status = $("#col_status_"+no).html();
 
-					$("#col_tanggal_"+no).html($("#input_tanggal_"+no).val());
-					$("#col_perusahaan_"+no).html($("#input_perusahaan_"+no).val());
-					$("#col_kode_"+no).html($("#input_kode_"+no).val());
-					$("#col_nomor_"+no).html($("#input_nomor_"+no).val());
-					$("#col_ukuran_"+no).html($("#input_ukuran_"+no).val());
+					$("#col_tanggal_"+no).html(form_data.tanggal);
+					$("#col_perusahaan_"+no).html(form_data.perusahaan);
+					$("#col_kode_"+no).html(form_data.kode);
+					$("#col_nomor_"+no).html(form_data.nomor);
+					$("#col_ukuran_"+no).html(form_data.ukuran);
 					if(status == '0') $("#col_ip_"+no).html("<a href='#ip_row' class='ip ip_button' no='$no'></a></td>");
 					else $("#col_ip_"+no).html("<a href='#' class='unip' no='$no'></a></td>");
 					$("#col_edit_"+no).html("<a href='#' onclick=\"edit_row('"+no+"')\" class='edit'></a>");
 					$("#col_delete_"+no).html("<a href='#' onclick=\"confirm_delete_row('"+no+"')\" class='trash'></a>");
+
+					$("a.ip_button").fancybox({
+						overlayShow	: true,
+						transitionIn : 'elastic',
+						transitionOut : 'elastic',
+						showCloseButton : false,
+						onComplete : function(links, index){
+							var $self = $(links[index]);  
+					      	var no = $self.attr('no');
+					      	ip_row(no);
+						},
+						onClosed : function(){
+							$("#ip_no_pib").val("");
+							$("#ip_tgl_pib").val("");
+							$("#ip_jam_ip").val("");
+							$("#ip_jam_periksa_st").val("");
+							$("#ip_jam_periksa_en").val("");
+							$("#ip_uraian").val("");
+							$("#ip_pemeriksa").val("");
+							$("#ip_tgl_sppb").val("");
+
+							if(isJqtpOpen) $("#jqtp_clockDiv").jqpopup_close(this.id);
+						}
+					});
 				}
 			});
 		}else{
@@ -391,10 +533,22 @@
 			transitionIn : 'elastic',
 			transitionOut : 'elastic',
 			showCloseButton : false,
-			onStart : function(links, index){
+			onComplete : function(links, index){
 				var $self = $(links[index]);  
 		      	var no = $self.attr('no');  
 		      	ip_row(no);
+			},
+			onClosed : function(){
+				$("#ip_no_pib").val("");
+				$("#ip_tgl_pib").val("");
+				$("#ip_jam_ip").val("");
+				$("#ip_jam_periksa_st").val("");
+				$("#ip_jam_periksa_en").val("");
+				$("#ip_uraian").val("");
+				$("#ip_pemeriksa").val("");
+				$("#ip_tgl_sppb").val("");
+
+				if(isJqtpOpen) $("#jqtp_clockDiv").jqpopup_close(this.id);
 			}
 		});
 	}

@@ -55,11 +55,6 @@ class Kontainer_model extends CI_Model
 	function insert($data)
 	{
 		$data['tanggal'] = str_replace("/", "-", $data['tanggal']);
-
-		if(isset($data['tgl_pib'])){
-			$part = explode('/', $tgl_pib);
-			$data['tgl_pib'] = $part[2].'-'.$part[0].'-'.$part[1];
-		}
 		
 		$this->db->insert('kontainer', $data);
 	}
@@ -68,6 +63,12 @@ class Kontainer_model extends CI_Model
 	{
 		if(isset($data['tanggal'])){
 			$data['tanggal'] = str_replace("/", "-", $data['tanggal']);
+		}
+		if(isset($data['tgl_pib'])){
+			$data['tgl_pib'] = str_replace("/", "-", $data['tgl_pib']);
+		}
+		if(isset($data['tgl_sppb'])){
+			$data['tgl_sppb'] = str_replace("/", "-", $data['tgl_sppb']);
 		}
 		$this->db->where('no', $data['no']);
 		$ret = $this->db->update('kontainer', $data); 
@@ -90,5 +91,12 @@ class Kontainer_model extends CI_Model
 	{
 		$numrows = count($this->get_search_all_rows($key));
 		return intval(($numrows-1)/30) + 1;
+	}
+
+	function get_xls_rows()
+	{
+		$kueri = "SELECT no,tanggal,perusahaan,kode,nomor,ukuran,uraian,tgl_pib,tgl_sppb FROM kontainer ORDER BY tanggal,no";
+		$ret = $this->db->query($kueri)->result_array();
+		return $ret;
 	}
 }

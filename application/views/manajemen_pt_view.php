@@ -15,9 +15,9 @@
 		<script type="text/javascript" src="<?=base_url();?>application/js/jquery.fancybox-1.3.4/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 	</head>
 	<body>
-		<header>
+		<header id="header">
 			<?php 
-				$data['active'] = 4;
+				$data['active'] = 3;
 				$this->load->view('header', $data); 
 			?>
 		</header>
@@ -25,13 +25,13 @@
 		<section id="section">
 			<div id="content" class="container_16 clearfix">
 				<form method="post" action="<?=site_url('manajemen_pt/entry')?>">
-					<div class="grid_3"><p>
+					<div class="grid_5"><p>
 						<input name="owner" type="text" placeholder="Nama Owner" required/>
 					</p></div>
-					<div class="grid_4"><p>
+					<div class="grid_5"><p>
 						<input name="nama" type="text" placeholder="Nama Perusahaan" required/>
 					</p></div>
-					<div class="grid_3"><p>
+					<div class="grid_5"><p>
 						<input name="kode" type="text" placeholder="Kode Perusahaan" required/>
 					</p></div>
 					<div class="grid_1"><p>
@@ -42,11 +42,11 @@
 				</form>
 
 				
-				<div class="grid_9">
+				<div class="grid_14">
 					<p>&nbsp;</p>
 				</div>
 				<form method='POST' action='<?=base_url();?>manajemen_pt/search'>
-					<div class="grid_4">
+					<div class="grid_5">
 						<p>
 							<input type="text" name='search' placeholder="Search Table"/>
 						</p>
@@ -72,12 +72,12 @@
 				<div class="grid_16">
 					<table id="dataList" clas="tablesorter">
 						<colgroup>
-							<col class="colA" style="width:80px; word-wrap:break-word;"/>
-							<col class="colC" style="width:280px; word-wrap:break-word;"/>
-							<col class="colD" style="width:310px; word-wrap:break-word;"/>
-							<col class="colE" style="width:200px; word-wrap:break-word;"/>
+							<col class="colA" style="width:120px; word-wrap:break-word;"/>
+							<col class="colC" style="width:350px; word-wrap:break-word;"/>
+							<col class="colD" style="width:360px; word-wrap:break-word;"/>
+							<col class="colE" style="width:320px; word-wrap:break-word;"/>
 							<col class="colG" style="width:30px; word-wrap:break-word;"/>
-							<col class="colH" style="width:40px; word-wrap:break-word;"/>
+							<col class="colH" style="width:50px; word-wrap:break-word;"/>
 						</colgroup>
 						<thead>
 							<tr>

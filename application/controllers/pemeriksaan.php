@@ -7,12 +7,16 @@ class Pemeriksaan extends CI_Controller
 		parent::__construct();
 		$this->load->model('pemeriksaan_model', 'pemeriksaan', true);
 		$this->load->model('perusahaan_model', 'perusahaan', true);
+		$this->load->model('ukuran_model', 'ukuran', true);
+		$this->load->model('pemeriksa_model', 'pemeriksa', true);
 	}
 
 	function index()
 	{
 		$data['rows'] = $this->pemeriksaan->get_rows(0, 30);
 		$data['list_perusahaan'] = $this->perusahaan->get_all_perusahaan();
+		$data['list_ukuran'] = $this->ukuran->get_all_ukuran();
+		$data['list_pemeriksa'] = $this->pemeriksa->get_all_pemeriksa();
 		$data['maxpage'] = $this->pemeriksaan->get_max_page();
 		$data['page'] = 1;
 
@@ -25,6 +29,8 @@ class Pemeriksaan extends CI_Controller
 
 		$data['rows'] = $this->pemeriksaan->get_rows(30*($pg-1), 30);
 		$data['list_perusahaan'] = $this->perusahaan->get_all_perusahaan();
+		$data['list_ukuran'] = $this->ukuran->get_all_ukuran();
+		$data['list_pemeriksa'] = $this->pemeriksa->get_all_pemeriksa();
 		$data['maxpage'] = $this->pemeriksaan->get_max_page();
 		$data['page'] = $pg;
 
@@ -45,6 +51,8 @@ class Pemeriksaan extends CI_Controller
 		$data['key'] = $key;
 		$data['rows'] = $this->pemeriksaan->get_search_rows($key, 30*($pg-1), 30);
 		$data['list_perusahaan'] = $this->perusahaan->get_all_perusahaan();
+		$data['list_ukuran'] = $this->ukuran->get_all_ukuran();
+		$data['list_pemeriksa'] = $this->pemeriksa->get_all_pemeriksa();
 		$data['maxpage'] = $this->pemeriksaan->get_search_max_page($key);
 		$data['page'] = $pg;
 
@@ -86,9 +94,11 @@ class Pemeriksaan extends CI_Controller
 		$data['nomor'] = $_POST['nomor'];
 		$data['ukuran'] = $_POST['ukuran'];
 		$data['jam_ip'] = $_POST['jam_ip'];
-		$data['jam_periksa'] = $_POST['jam_periksa'];
+		$data['jam_periksa_st'] = $_POST['jam_periksa_st'];
+		$data['jam_periksa_en'] = $_POST['jam_periksa_en'];
 		$data['uraian'] = $_POST['uraian'];
 		$data['pemeriksa'] = $_POST['pemeriksa'];
+		$data['tgl_sppb'] = $_POST['tgl_sppb'];
 		$ret = $this->pemeriksaan->update($data);
 	}
 
@@ -105,18 +115,12 @@ class Pemeriksaan extends CI_Controller
 
 	function download_xls()
 	{
-		if(!isset($_GET['key'])){
-			$data['filename'] = "pemeriksaan.xls";
-			$data['headers'] = Array("No.", "Tanggal", "Perusahaan", "No. PIB", "Tgl PIB", "Kode Kontainer", "No. Kontainer", "Ukuran", "Jam IP", "Jam Periksa", "Uraian Barang", "Pemeriksa");	
-			$data['row_keys'] = Array("no", "tanggal", "perusahaan", "no_pib", "tgl_pib", "kode", "nomor", "ukuran", "jam_ip", "jam_periksa", "uraian", "pemeriksa");
-			$data['rows'] = $this->pemeriksaan->get_all_rows();
-		}else{
-			$key = $_GET['key'];
-			$data['filename'] = "pemeriksaan_search=$key.xls";
-			$data['headers'] = Array("No.", "Tanggal", "Perusahaan", "No. PIB", "Tgl PIB", "Kode Kontainer", "No. Kontainer", "Ukuran", "Jam IP", "Jam Periksa", "Uraian Barang", "Pemeriksa");	
-			$data['row_keys'] = Array("no", "tanggal", "perusahaan", "no_pib", "tgl_pib", "kode", "nomor", "ukuran", "jam_ip", "jam_periksa", "uraian", "pemeriksa");
-			$data['rows'] = $this->pemeriksaan->get_search_all_rows($key);
-		}
+		$data['flag'] = 2;
+		$data['filename'] = "2. Daftar Insttruksi Pemeriksaan.xls";
+		$data['row_keys'] = Array("no", "tanggal", "perusahaan", "no_pib", "tgl_pib","kode", "nomor", "ukuran", "jam_ip", "jam_periksa_st", "jam_periksa_en","uraian", "pemeriksa", "tgl_sppb");
+		$data['rows'] = $this->pemeriksaan->get_xls_rows();
+		$data['list_ukuran'] = $this->ukuran->get_all_ukuran();
+		
 		$this->load->view('download_xls', $data);
 	}
 }

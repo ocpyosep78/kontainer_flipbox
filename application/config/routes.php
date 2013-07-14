@@ -40,6 +40,7 @@
 
 $route['default_controller'] = "kontainer";
 $route['404_override'] = '';
+$route['tes'] = "tes/pemeriksaan";
 
 
 /* End of file routes.php */

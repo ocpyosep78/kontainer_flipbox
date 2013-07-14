@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en" xml:lang="en">
+<head>
+		<link rel="stylesheet" type="text/css" href="css/jqtp.css"/>
+		<link rel="stylesheet" type="text/css" href="css/jqpopup.css">
+		<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+		<script type="text/javascript" src="js/jQuery.jqtp.min.js"></script>
+		<script type="text/javascript" src="js/jquery.bgiframe.min.js"></script>
+		<script type="text/javascript" src="js/jqDnR.min.js"></script>
+		<script type="text/javascript" src="js/jquery.jqpopup.min.js"></script>
+</head>
+<body>
+<div id="jqtp_clockDiv" style="display:none;padding:10px;" title="Time Picker">
+    <table>
+		<tr>
+			<td align="center">
+				<div id="jqtp_clock"></div>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<input type="text" id="jqtp_clock_hr" style="width:20px;"/>:
+				<input type="text" id="jqtp_clock_min" style="width:20px;"/>      
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<input type="button" id="pick" value="Pick"/>
+				<input type="button" id="now" value="Now"/>
+			</td>
+		</tr>
+    </table>
+</div>
+Time:
+<input type="text" id="start" size="8"/>
+<input type="text" id="end" size="8"/>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#jqtp_clock").jqtp();
+		$("#jqtp_clock").jqtp_realtime();
+
+		$("#start").focus(function() {
+			$("#start").jqtp_object();
+			$("#jqtp_clockDiv").jqpopup_open(this.id, true);
+		});
+		
+		$("#end").focus(function() {
+			$("#end").jqtp_object();
+			$("#jqtp_clockDiv").jqpopup_open(this.id, true);
+		});
+	   
+		$("#now").click(function(){
+			$("#jqtp_clock").jqtp_realtime();
+		});
+
+		$("#pick").click(function(){
+			$("#jqtp_clock").jqtp_getTime();
+			$("#jqtp_clockDiv").jqpopup_close(this.id);
+		});
+	});
+</script>
+
+</body>
+</html>
