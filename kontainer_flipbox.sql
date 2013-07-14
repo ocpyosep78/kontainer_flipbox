@@ -3,7 +3,7 @@
 -- Server version:               5.5.16 - MySQL Community Server (GPL)
 -- Server OS:                    Win32
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2013-07-14 20:34:23
+-- Date/time:                    2013-07-15 00:38:42
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `kontainer` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1095 DEFAULT CHARSET=latin1;
 
--- Dumping data for table kontainer_flipbox.kontainer: ~267 rows (approximately)
+-- Dumping data for table kontainer_flipbox.kontainer: ~289 rows (approximately)
 /*!40000 ALTER TABLE `kontainer` DISABLE KEYS */;
 INSERT INTO `kontainer` (`id`, `no`, `tanggal`, `perusahaan`, `kode`, `nomor`, `ukuran`, `status`, `no_pib`, `tgl_pib`, `jam_ip`, `jam_periksa_st`, `jam_periksa_en`, `uraian`, `pemeriksa`, `tgl_sppb`, `tgl_ip`) VALUES
 	(817, 1, '2013-06-24', 'PDG', 'CRXU', '1234567', '20"', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -206,7 +206,7 @@ INSERT INTO `kontainer` (`id`, `no`, `tanggal`, `perusahaan`, `kode`, `nomor`, `
 	(985, 180, '2013-06-24', 'PDG', 'CRXU', '1234567', '20"', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	(986, 181, '2013-06-24', 'PDG', 'CRXU', '1234567', '20"', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	(987, 182, '2013-06-24', 'PDG', 'CRXU', '1234567', '20"', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-	(988, 183, '2013-06-24', 'PDG', 'CRXU', '1234567', '20"', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(988, 185, '2013-03-08', 'FLP2', 'CRXU', '32323232', '20"', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2013-07-14'),
 	(989, 184, '2013-06-24', 'PDG', 'CRXU', '1234567', '20"', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	(990, 185, '2013-06-24', 'PDG', 'CRXU', '1234567', '20"', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	(991, 186, '2013-06-24', 'PDG', 'CRXU', '1234567', '20"', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -306,13 +306,12 @@ INSERT INTO `kontainer` (`id`, `no`, `tanggal`, `perusahaan`, `kode`, `nomor`, `
 	(1085, 317, '2013-03-18', 'PDG', 'CRXU', '7654331', '40"', 2, '123', '2013-03-18', '13:03:00', '15:03:00', '12:52:00', 'abcd', 'mun', '2013-03-18', NULL),
 	(1086, 318, '2013-07-09', 'TNS', 'SIKU', '1234568', '40"', 1, '124', '2013-07-08', '23:00:00', '23:33:00', '23:33:00', 'nashkd', 'muns', '2013-07-08', NULL),
 	(1087, 319, '2013-07-16', 'CHC', 'PONU', '1234567', '40"', 1, '321', '2013-07-09', '12:12:00', '13:13:00', '13:13:00', 'kjbsfa', 'lah', '2013-07-08', NULL),
-	(1088, 813, '2013-06-04', 'PDG', 'CRXU', '1234567', '40"', 1, '123', '2013-07-24', '15:25:00', '12:25:00', '15:25:00', 'asd', 'mun', '2013-07-15', '2013-07-14'),
 	(1089, 814, '2013-07-16', 'FLP', 'CRXU', '1234567', '40"', 0, '12', '2013-07-23', '17:21:00', '18:15:00', '17:21:00', 'kjbsfa', '-', NULL, NULL),
 	(1090, 815, '2013-07-17', 'FLP', 'ABCD', '1234567', '20"', 1, '12', '2013-07-15', '12:57:00', '00:57:00', '14:57:00', 'abc123', 'aqid', '2013-07-23', NULL),
 	(1091, 816, '2013-07-15', 'SQR', 'ABCD', '1234567', '20"', 1, '123', '2013-07-16', '12:59:00', '00:59:00', '00:59:00', 'abc123', 'aqid', '2013-07-15', NULL),
-	(1092, 317, '2013-03-17', 'PDG', 'CRXU', '1234567', '40"', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-	(1093, 183, '2013-03-12', 'PDG2', 'CRXU', '1234567', '20"', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-	(1094, 183, '2013-03-08', 'FLP2', 'CRXU', '1234567', '20"', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+	(1092, 317, '2013-03-17', 'PDG', 'CRXU', '1234568', '20"', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2013-07-14'),
+	(1093, 183, '2013-07-15', 'FLP2', 'CRXU', '7452342', '40"', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2013-07-14'),
+	(1094, 184, '2013-03-08', 'FLP2', 'CRXU', '3451312', '40"', 1, '', '2013-07-09', '00:00:00', '00:00:00', '00:00:00', '', '-', '2013-07-17', '2013-07-14');
 /*!40000 ALTER TABLE `kontainer` ENABLE KEYS */;
 
 
@@ -341,7 +340,7 @@ CREATE TABLE IF NOT EXISTS `perusahaan` (
   PRIMARY KEY (`no`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
--- Dumping data for table kontainer_flipbox.perusahaan: ~5 rows (approximately)
+-- Dumping data for table kontainer_flipbox.perusahaan: ~7 rows (approximately)
 /*!40000 ALTER TABLE `perusahaan` DISABLE KEYS */;
 INSERT INTO `perusahaan` (`no`, `nama`, `owner`, `kode`) VALUES
 	(1, 'Pandago Studio', 'Ujan', 'PDG'),

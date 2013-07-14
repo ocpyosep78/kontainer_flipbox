@@ -70,16 +70,16 @@
 						</select>
 					</p></div>
 					<div class="grid_2"><p>
-						<input name="jam_ip" type="text" placeholder="Jam IP" id="jam_ip" required style="width:40px;float:left;text-align:center;"/>
+						<input name="jam_ip" type="text" placeholder="Jam IP" id="jam_ip" class="timepicker" required style="width:40px;float:left;text-align:center;"/>
 					</p></div>
 					<div class="grid_6"></div>
 					<div class="grid_2" style="padding-top:6px;margin-left:-1px;">Jam Periksa :</div>
 					<div class="grid_2"><p>
-						<input name="jam_periksa_st" type="text" placeholder="Mulai" id="jam_periksa_st" required style="width:40px;margin-left:-20px;float:left;text-align:center;"/>
+						<input name="jam_periksa_st" type="text" placeholder="Mulai" id="jam_periksa_st" class="timepicker" required style="width:40px;margin-left:-20px;float:left;text-align:center;"/>
 					</p></div>
 					<div class="grid_1" style="padding-top:6px;margin-left:-90px;">-</div>
 					<div class="grid_1"><p>
-						<input name="jam_periksa_en" type="text" placeholder="Selesai" id="jam_periksa_en" required style="width:44px;margin-left:-70px;float:left;text-align:center;"/>
+						<input name="jam_periksa_en" type="text" placeholder="Selesai" id="jam_periksa_en" class="timepicker" required style="width:44px;margin-left:-70px;float:left;text-align:center;"/>
 					</p></div>
 					<div class="grid_3" style="margin-left:-40px;"><p>
 						<input name="uraian" type="text" placeholder="Uraian Barang" required/>
@@ -190,28 +190,28 @@
 
 								echo "
 									<tr>
-										<td id='col_no_$no' style='text-align:left;'>$no</td>
-										<td id='col_tanggal_$no' class='center'>$tanggal</td>
-										<td id='col_perusahaan_$no'>$perusahaan</td>
-										<td id='col_no_pib_$no'>$no_pib</td>
-										<td id='col_tgl_pib_$no' class='center'>$tgl_pib</td>
-										<td id='col_kode_$no'>$kode</td>
-										<td id='col_nomor_$no'>$nomor</td>
-										<td id='col_ukuran_$no' class='center'>$ukuran</td>
-										<td id='col_jam_ip_$no' class='center'>$jam_ip</td>
-										<td id='col_jam_periksa_st_$no' class='center'>$jam_periksa_st</td>
-										<td id='col_jam_periksa_en_$no' class='center'>$jam_periksa_en</td>
-										<td id='col_uraian_$no'>$uraian</td>
-										<td id='col_pemeriksa_$no'>$pemeriksa</td>
-										<td id='col_tgl_sppb_$no'>$tgl_sppb</td>
-										<td id='col_sppb_$no' class='center'>";
-				if($status == '1') echo 	"<a href='#' onclick=\"sppb_submit('$no')\" class='sppb' no='$no'></a></td>"; 
+										<td id='col_no_$id' style='text-align:left;'>$no</td>
+										<td id='col_tanggal_$id' class='center'>$tanggal</td>
+										<td id='col_perusahaan_$id'>$perusahaan</td>
+										<td id='col_no_pib_$id'>$no_pib</td>
+										<td id='col_tgl_pib_$id' class='center'>$tgl_pib</td>
+										<td id='col_kode_$id'>$kode</td>
+										<td id='col_nomor_$id'>$nomor</td>
+										<td id='col_ukuran_$id' class='center'>$ukuran</td>
+										<td id='col_jam_ip_$id' class='center'>$jam_ip</td>
+										<td id='col_jam_periksa_st_$id' class='center'>$jam_periksa_st</td>
+										<td id='col_jam_periksa_en_$id' class='center'>$jam_periksa_en</td>
+										<td id='col_uraian_$id'>$uraian</td>
+										<td id='col_pemeriksa_$id'>$pemeriksa</td>
+										<td id='col_tgl_sppb_$id'>$tgl_sppb</td>
+										<td id='col_sppb_$id' class='center'>";
+				if($status == '1') echo 	"<a href='#' onclick=\"sppb_submit('$id')\" class='sppb' no='$id'></a></td>"; 
 				else echo 					"<a href='#' class='sppbyes'></a></td>";
-				echo "					<td id='col_edit_$no' class='center'><a href='#' onclick=\"edit_row('$no')\" class='edit'></a></td>
-										<td id='col_delete_$no' class='center'><a href='#' onclick=\"confirm_delete_row('$no')\" class='delete'></a></td>
+				echo "					<td id='col_edit_$id' class='center'><a href='#' onclick=\"edit_row('$id')\" class='edit'></a></td>
+										<td id='col_delete_$id' class='center'><a href='#' onclick=\"confirm_delete_row('$id')\" class='delete'></a></td>
 									</tr>
 									<tr style='display:none'>
-										<td id='col_status_$no'>$status</td>
+										<td id='col_status_$id'>$status</td>
 									</tr>
 								";
 							}
@@ -376,6 +376,16 @@
 		});
 	});
 
+	$(document).click(function(){
+		if(isJqtpOpen) $("#jqtp_clockDiv").jqpopup_close(this.id);
+	});
+	$("#jqtp_clockDiv").click(function(){
+		return false;
+	});
+	$(".timepicker").click(function(){
+		return false;
+	});
+
 	function sppb_submit(no)
 	{
 		<?php
@@ -388,6 +398,7 @@
 
 	function edit_row(no)
 	{
+		var val_no = $("#col_no_"+no).html();
 		var val_tanggal = $("#col_tanggal_"+no).html();
 		var val_perusahaan = $("#col_perusahaan_"+no).html();
 		var val_no_pib = $("#col_no_pib_"+no).html();
@@ -405,6 +416,7 @@
 
 		val_ukuran = val_ukuran.replace("\"","");
 
+		var input_no = "<input id='input_no_"+no+"' name='no' value='"+val_no+"' type='text' style='width:30px; height:14px; vertical-align:middle;'/>";
 		var input_tanggal = "<input id='input_tanggal_"+no+"' name='tanggal' type='text' class='datepicker_"+no+"' value='"+val_tanggal+"' style='width:65px; height:14px; vertical-align:middle;'/>";
 		var input_perusahaan = "<select id='input_perusahaan_"+no+"' name='perusahaan' style='width:100px; height:25px; vertical-align:middle;'>" + 
 									"<option value='-'>[Pilih Perusahaan]</option>" + 
@@ -433,9 +445,9 @@
 								echo "\"";
 								?>
 							+ "</select>";
-		var input_jam_ip = "<input id='input_jam_ip_"+no+"' name='jam_ip' type='text' value='"+val_jam_ip+"' style='width:40px; height:14px; text-align:center; vertical-align:middle;'/>";
-		var input_jam_periksa_st = "<input id='input_jam_periksa_st_"+no+"' name='jam_periksa_st' type='text' value='"+val_jam_periksa_st+"' style='width:40px; height:14px; text-align:center; vertical-align:middle; margin-left:-10px;'/>";
-		var input_jam_periksa_en = "<input id='input_jam_periksa_en_"+no+"' name='jam_periksa_en' type='text' value='"+val_jam_periksa_en+"' style='width:40px; height:14px; text-align:center; vertical-align:middle; margin-left:-5px;'/>";
+		var input_jam_ip = "<input id='input_jam_ip_"+no+"' class='timepicker' name='jam_ip' type='text' value='"+val_jam_ip+"' style='width:40px; height:14px; text-align:center; vertical-align:middle;'/>";
+		var input_jam_periksa_st = "<input id='input_jam_periksa_st_"+no+"' class='timepicker' name='jam_periksa_st' type='text' value='"+val_jam_periksa_st+"' style='width:40px; height:14px; text-align:center; vertical-align:middle; margin-left:-10px;'/>";
+		var input_jam_periksa_en = "<input id='input_jam_periksa_en_"+no+"' class='timepicker' name='jam_periksa_en' type='text' value='"+val_jam_periksa_en+"' style='width:40px; height:14px; text-align:center; vertical-align:middle; margin-left:-5px;'/>";
 		var input_uraian = "<input id='input_uraian_"+no+"' name='uraian' type='text' value='"+val_uraian+"' style='width:100px; height:14px; vertical-align:middle;'/>";
 		var input_pemeriksa = "<select id='input_pemeriksa_"+no+"' name='pemeriksa' style='width:80px; height:25px; vertical-align:middle; text-align:center;'>" +
 								"<option value='-'>[Pilih Pemeriksa]</option>" +
@@ -450,8 +462,9 @@
 							+ "</select>";
 		var input_tgl_sppb = "<input id='input_tgl_sppb_"+no+"' name='tgl_sppb' type='text' class='datepicker3_"+no+"' value='"+val_tgl_sppb+"' style='width:65px; height:14px; vertical-align:middle;'/>";
 		var save_button = "<a href='#' onclick=\"save_row('"+no+"')\" class='save'></a>";
-		var cancel_button = "<a href='#' onclick=\"cancel_row('"+no+"','"+val_tanggal+"','"+val_perusahaan+"','"+val_no_pib+"','"+val_tgl_pib+"','"+val_kode+"','"+val_nomor+"','"+val_ukuran+"','"+val_jam_ip+"','"+val_jam_periksa_st+"','"+val_jam_periksa_en+"','"+val_uraian+"','"+val_pemeriksa+"','"+val_tgl_sppb+"','"+val_status+"')\" class='cancel'></a>";
+		var cancel_button = "<a href='#' onclick=\"cancel_row('"+no+"','"+val_no+"','"+val_tanggal+"','"+val_perusahaan+"','"+val_no_pib+"','"+val_tgl_pib+"','"+val_kode+"','"+val_nomor+"','"+val_ukuran+"','"+val_jam_ip+"','"+val_jam_periksa_st+"','"+val_jam_periksa_en+"','"+val_uraian+"','"+val_pemeriksa+"','"+val_tgl_sppb+"','"+val_status+"')\" class='cancel'></a>";
 		
+		$("#col_no_"+no).html(input_no);
 		$("#col_tanggal_"+no).html(input_tanggal);
 		$("#col_perusahaan_"+no).html(input_perusahaan);
 		$("#col_no_pib_"+no).html(input_no_pib);
@@ -539,12 +552,23 @@
 			$("#jqtp_clock").jqtp_realTime();
 			isJqtpOpen = false;
 		});
+
+		$(document).click(function(){
+			if(isJqtpOpen) $("#jqtp_clockDiv").jqpopup_close(this.id);
+		});
+		$("#jqtp_clockDiv").click(function(){
+			return false;
+		});
+		$(".timepicker").click(function(){
+			return false;
+		});
 	}
 
 	function save_row(no)
 	{
 		var form_data = {
-			no: no,
+			id: no,
+			no: $("#input_no_"+no).val(),
 			tanggal: $("#input_tanggal_"+no).val(),
 			perusahaan: $("#input_perusahaan_"+no).val(),
 			no_pib: $("#input_no_pib_"+no).val(),
@@ -584,6 +608,7 @@
 				success: function(){
 					var status = $("#col_status_"+no).html();
 
+					$("#col_no_"+no).html(form_data.no);
 					$("#col_tanggal_"+no).html(form_data.tanggal);
 					$("#col_perusahaan_"+no).html(form_data.perusahaan);
 					$("#col_no_pib_"+no).html(form_data.no_pib);
@@ -608,8 +633,9 @@
 		}
 	}
 
-	function cancel_row(no, tanggal, perusahaan, no_pib, tgl_pib, kode, nomor, ukuran, jam_ip, jam_periksa_st, jam_periksa_en, uraian, pemeriksa, tgl_sppb, status)
+	function cancel_row(no, nom, tanggal, perusahaan, no_pib, tgl_pib, kode, nomor, ukuran, jam_ip, jam_periksa_st, jam_periksa_en, uraian, pemeriksa, tgl_sppb, status)
 	{
+		$("#col_no_"+no).html(nom);
 		$("#col_tanggal_"+no).html(tanggal);
 		$("#col_perusahaan_"+no).html(perusahaan);
 		$("#col_no_pib_"+no).html(no_pib);

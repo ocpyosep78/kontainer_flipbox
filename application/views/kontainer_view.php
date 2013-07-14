@@ -128,23 +128,31 @@
 							foreach($rows as $row){
 								extract($row);
 								$tanggal = str_replace("-", "/", $tanggal);
+								
+								$today = date('Y/m/d');
+								$t_tanggal = strtotime($tanggal);
+								$t_today = strtotime($today);
+								$difsecs = $t_today - $t_tanggal;
+								$difday = $difsecs / (24*60*60) + 1;
+
+								if($difday >= 30) echo "<tr style='color:red; font-weight:bold;'>";
+								else echo "<tr>";
 
 								echo "
-									<tr>
-										<td id='col_no_$no' style='text-align:left;'>$no</td>
-										<td id='col_tanggal_$no' class='center'>$tanggal</td>
-										<td id='col_perusahaan_$no'>$perusahaan</td>
-										<td id='col_kode_$no'>$kode</td>
-										<td id='col_nomor_$no'>$nomor</td>
-										<td id='col_ukuran_$no' class='center'>$ukuran</td>
-										<td id='col_ip_$no' class='center'>";
-			   	if($status == '0') echo 	"<a href='#ip_row' class='ip ip_button' no='$no'></a></td>"; 
+										<td id='col_no_$id' style='text-align:left;'>$no</td>
+										<td id='col_tanggal_$id' class='center'>$tanggal</td>
+										<td id='col_perusahaan_$id'>$perusahaan</td>
+										<td id='col_kode_$id'>$kode</td>
+										<td id='col_nomor_$id'>$nomor</td>
+										<td id='col_ukuran_$id' class='center'>$ukuran</td>
+										<td id='col_ip_$id' class='center'>";
+			   	if($status == '0') echo 	"<a href='#ip_row' class='ip ip_button' no='$id'></a></td>"; 
 				else echo 					"<a href='#' class='unip'></a></td>";
-				echo "					<td id='col_edit_$no' class='center'><a href='#' onclick=\"edit_row('$no')\" class='edit'></a></td>
-										<td id='col_delete_$no' class='center'><a href='#' onclick=\"confirm_delete_row('$no')\" class='trash'></a></td>
+				echo "					<td id='col_edit_$id' class='center'><a href='#' onclick=\"edit_row('$id')\" class='edit'></a></td>
+										<td id='col_delete_$id' class='center'><a href='#' onclick=\"confirm_delete_row('$id')\" class='trash'></a></td>
 									</tr>
 									<tr style='display:none'>
-										<td id='col_status_$no'>$status</td>
+										<td id='col_status_$id'>$status</td>
 									</tr>
 								";
 							}
@@ -200,15 +208,15 @@
 							<input id="ip_tgl_pib" type="text" class="datepicker3" placeholder="Tgl PIB"/>
 						</p></div>
 						<div class="grid_2"><p>
-							<input id="ip_jam_ip" type="text" placeholder="Jam IP" style="width:40px;text-align:center;"/>
+							<input id="ip_jam_ip" class="timepicker" type="text" placeholder="Jam IP" style="width:40px;text-align:center;"/>
 						</p></div>
 						<div class="grid_2" style="padding-top:5px;">Jam Periksa :</div>
 						<div class="grid_2"><p>
-							<input id="ip_jam_periksa_st" type="text" placeholder="Mulai" required style="width:40px;margin-left:-15px;text-align:center;"/>
+							<input id="ip_jam_periksa_st" class="timepicker" type="text" placeholder="Mulai" required style="width:40px;margin-left:-15px;text-align:center;"/>
 						</p></div>
 						<div class="grid_1" style="padding-top:5px;margin-left:-5px;">-</div>
 						<div class="grid_1"><p>
-							<input id="ip_jam_periksa_en" type="text" placeholder="Selesai" required style="width:44px;margin-left:-15px;text-align:center;"/>
+							<input id="ip_jam_periksa_en" class="timepicker" type="text" placeholder="Selesai" required style="width:44px;margin-left:-15px;text-align:center;"/>
 						</p></div>
 						<div class="grid_2"><p>
 							<input id="ip_uraian" type="text" placeholder="Uraian Barang"/>
@@ -375,6 +383,16 @@
 			$("#jqtp_clockDiv").jqpopup_close(this.id);
 			isJqtpOpen = false;
 		});
+
+		$(document).click(function(){
+			if(isJqtpOpen) $("#jqtp_clockDiv").jqpopup_close(this.id);
+		});
+		$("#jqtp_clockDiv").click(function(){
+			return false;
+		});
+		$(".timepicker").click(function(){
+			return false;
+		});
 	}
 
 	function ip_submit(no)
@@ -398,6 +416,7 @@
 
 	function edit_row(no)
 	{
+		var val_no = $("#col_no_"+no).html();
 		var val_tanggal = $("#col_tanggal_"+no).html();
 		var val_perusahaan = $("#col_perusahaan_"+no).html();
 		var val_kode = $("#col_kode_"+no).html();
@@ -407,6 +426,7 @@
 
 		val_ukuran = val_ukuran.replace("\"","");
 
+		var input_no = "<input id='input_no_"+no+"' name='no' value='"+val_no+"' type='text' style='width:30px; height:14px; vertical-align:middle;'/>";
 		var input_tanggal = "<input id='input_tanggal_"+no+"' name='tanggal' type='text' class='datepicker_"+no+"' value='"+val_tanggal+"' style='width:65px; height:14px; vertical-align:middle;'/>";
 		var input_perusahaan = "<select id='input_perusahaan_"+no+"' name='perusahaan' style='width:150px; height:25px; vertical-align:middle;'>" +
 									"<option value='-'>[Pilih Perusahaan]</option>" + 
@@ -434,8 +454,9 @@
 								?>
 							+ "</select>";
 		var save_button = "<a href='#' onclick=\"save_row('"+no+"')\" class='save'></a>";
-		var cancel_button = "<a href='#' onclick=\"cancel_row('"+no+"','"+val_tanggal+"','"+val_perusahaan+"','"+val_kode+"','"+val_nomor+"','"+val_ukuran+"','"+val_status+"')\" class='cancel'></a>";
+		var cancel_button = "<a href='#' onclick=\"cancel_row('"+no+"','"+val_no+"','"+val_tanggal+"','"+val_perusahaan+"','"+val_kode+"','"+val_nomor+"','"+val_ukuran+"','"+val_status+"')\" class='cancel'></a>";
 		
+		$("#col_no_"+no).html(input_no);
 		$("#col_tanggal_"+no).html(input_tanggal);
 		$("#col_perusahaan_"+no).html(input_perusahaan);
 		$("#col_kode_"+no).html(input_kode);
@@ -454,7 +475,8 @@
 	function save_row(no)
 	{
 		var form_data = {
-			no: no,
+			id: no,
+			no: $("#input_no_"+no).val(),
 			tanggal: $("#input_tanggal_"+no).val(),
 			perusahaan: $("#input_perusahaan_"+no).val(),
 			kode: $("#input_kode_"+no).val(),
@@ -476,13 +498,14 @@
 				success: function(){
 					var status = $("#col_status_"+no).html();
 
+					$("#col_no_"+no).html(form_data.no);
 					$("#col_tanggal_"+no).html(form_data.tanggal);
 					$("#col_perusahaan_"+no).html(form_data.perusahaan);
 					$("#col_kode_"+no).html(form_data.kode);
 					$("#col_nomor_"+no).html(form_data.nomor);
 					$("#col_ukuran_"+no).html(form_data.ukuran);
-					if(status == '0') $("#col_ip_"+no).html("<a href='#ip_row' class='ip ip_button' no='$no'></a></td>");
-					else $("#col_ip_"+no).html("<a href='#' class='unip' no='$no'></a></td>");
+					if(status == '0') $("#col_ip_"+no).html("<a href='#ip_row' class='ip ip_button' no='"+no+"'></a></td>");
+					else $("#col_ip_"+no).html("<a href='#' class='unip' no='"+no+"'></a></td>");
 					$("#col_edit_"+no).html("<a href='#' onclick=\"edit_row('"+no+"')\" class='edit'></a>");
 					$("#col_delete_"+no).html("<a href='#' onclick=\"confirm_delete_row('"+no+"')\" class='trash'></a>");
 
@@ -516,15 +539,16 @@
 		}
 	}
 
-	function cancel_row(no, tanggal, perusahaan, kode, nomor, ukuran, status)
+	function cancel_row(no, nom, tanggal, perusahaan, kode, nomor, ukuran, status)
 	{
-		$("#col_tanggal_"+no).html(tanggal);
+		$("#col_no_"+no).html(nom);
+		$("#col_tanggal_"+no).html(tanggal);	
 		$("#col_perusahaan_"+no).html(perusahaan);
 		$("#col_kode_"+no).html(kode);
 		$("#col_nomor_"+no).html(nomor);
 		$("#col_ukuran_"+no).html(ukuran + "\"");
-		if(status == '0') $("#col_ip_"+no).html("<a href='#ip_row' class='ip ip_button' no='$no'></a></td>");
-		else $("#col_ip_"+no).html("<a href='#' class='unip' no='$no'></a></td>");
+		if(status == '0') $("#col_ip_"+no).html("<a href='#ip_row' class='ip ip_button' no='"+no+"'></a></td>");
+		else $("#col_ip_"+no).html("<a href='#' class='unip' no='"+no+"'></a></td>");
 		$("#col_edit_"+no).html("<a href='#' onclick=\"edit_row('"+no+"')\" class='edit'></a>");
 		$("#col_delete_"+no).html("<a href='#' onclick=\"confirm_delete_row('"+no+"')\" class='trash'></a>");
 

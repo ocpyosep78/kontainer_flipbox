@@ -74,7 +74,7 @@ class Kontainer extends CI_Controller
 	function ip($no)
 	{
 		extract($_GET);
-		$data['no'] = $no;
+		$data['id'] = $no;
 		$data['status'] = '1';
 		if(isset($no_pib) && $no_pib != "") $data['no_pib'] = $no_pib;
 		if(isset($tgl_pib) && $tgl_pib != "") $data['tgl_pib'] = $tgl_pib;
@@ -105,6 +105,7 @@ class Kontainer extends CI_Controller
 
 	function update()
 	{
+		$data['id'] = $_POST['id'];
 		$data['no'] = $_POST['no'];
 		$data['tanggal'] = $_POST['tanggal'];
 		$data['perusahaan'] = $_POST['perusahaan'];

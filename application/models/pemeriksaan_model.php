@@ -63,7 +63,7 @@ class Pemeriksaan_model extends CI_Model
 
 	function get_row($no)
 	{
-		$kueri = "SELECT * FROM kontainer WHERE status >= 1 AND no = $no";
+		$kueri = "SELECT * FROM kontainer WHERE status >= 1 AND id = $no";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
 	}
@@ -96,7 +96,7 @@ class Pemeriksaan_model extends CI_Model
 			$data['tgl_sppb'] = str_replace("/", "-", $data['tgl_sppb']);
 		}
 
-		$this->db->where('no', $data['no']);
+		$this->db->where('id', $data['id']);
 		$ret = $this->db->update('kontainer', $data); 
 		return $ret;
 	}
@@ -112,7 +112,7 @@ class Pemeriksaan_model extends CI_Model
 		$data['uraian'] = NULL;
 		$data['pemeriksa'] = NULL;
 		$data['tgl_sppb'] = NULL;
-		$this->db->where('no', $no);
+		$this->db->where('id', $no);
 		$ret = $this->db->update('kontainer', $data); 
 	}
 

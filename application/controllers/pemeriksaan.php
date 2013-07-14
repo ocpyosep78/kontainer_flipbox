@@ -85,6 +85,7 @@ class Pemeriksaan extends CI_Controller
 
 	function update()
 	{
+		$data['id'] = $_POST['id'];
 		$data['no'] = $_POST['no'];
 		$data['tanggal'] = $_POST['tanggal'];
 		$data['perusahaan'] = $_POST['perusahaan'];

@@ -47,7 +47,7 @@ class Kontainer_model extends CI_Model
 
 	function get_row($no)
 	{
-		$kueri = "SELECT * FROM kontainer WHERE no = $no";
+		$kueri = "SELECT * FROM kontainer WHERE id = $no";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
 	}
@@ -70,14 +70,14 @@ class Kontainer_model extends CI_Model
 		if(isset($data['tgl_sppb'])){
 			$data['tgl_sppb'] = str_replace("/", "-", $data['tgl_sppb']);
 		}
-		$this->db->where('no', $data['no']);
+		$this->db->where('id', $data['id']);
 		$ret = $this->db->update('kontainer', $data); 
 		return $ret;
 	}
 
 	function delete($no)
 	{
-		$kueri = "DELETE FROM kontainer WHERE no = $no";
+		$kueri = "DELETE FROM kontainer WHERE id = $no";
 		$this->db->query($kueri);
 	}
 
