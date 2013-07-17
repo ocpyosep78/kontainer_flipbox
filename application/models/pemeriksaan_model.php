@@ -35,7 +35,7 @@ class Pemeriksaan_model extends CI_Model
 
 		$kueri = "SELECT * FROM kontainer WHERE status >= 1 AND (no LIKE '%$key%' $tanggal OR perusahaan LIKE '%$key%'
 				OR kode LIKE '%$key%' OR nomor LIKE '%$key%' OR ukuran LIKE '%$key%' OR no_pib LIKE '%$key%' $tgl_pib
-				OR jam_ip LIKE '%$key%' OR jam_periksa LIKE '%$key%' OR uraian LIKE '%$key%' OR pemeriksa LIKE '%$key%' $tgl_sppb)
+				OR jam_ip LIKE '%$key%' OR jam_periksa_st LIKE '%$key%' OR jam_periksa_en LIKE '%$key%' OR uraian LIKE '%$key%' OR pemeriksa LIKE '%$key%' $tgl_sppb)
 				ORDER BY tanggal,no";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
@@ -55,7 +55,7 @@ class Pemeriksaan_model extends CI_Model
 
 		$kueri = "SELECT * FROM kontainer WHERE status >= 1 AND (no LIKE '%$key%' $tanggal OR perusahaan LIKE '%$key%'
 				OR kode LIKE '%$key%' OR nomor LIKE '%$key%' OR ukuran LIKE '%$key%' OR no_pib LIKE '%$key%' $tgl_pib
-				OR jam_ip LIKE '%$key%' OR jam_periksa LIKE '%$key%' OR uraian LIKE '%$key%' OR pemeriksa LIKE '%$key%' $tgl_sppb)
+				OR jam_ip LIKE '%$key%' OR jam_periksa_st LIKE '%$key%' OR jam_periksa_en LIKE '%$key%' OR uraian LIKE '%$key%' OR pemeriksa LIKE '%$key%' $tgl_sppb)
 				ORDER BY tanggal,no LIMIT $start, $limit";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;

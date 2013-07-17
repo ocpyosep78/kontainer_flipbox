@@ -13,6 +13,10 @@ class Kontainer extends CI_Controller
 
 	function index()
 	{
+		$salt = md5(uniqid(rand(),true));
+		echo $salt."<br>";
+		echo md5(md5('alay123').$salt);
+
 		$data['rows'] = $this->kontainer->get_rows(0, 30);
 		$data['list_perusahaan'] = $this->perusahaan->get_all_perusahaan();
 		$data['list_ukuran'] = $this->ukuran->get_all_ukuran();
