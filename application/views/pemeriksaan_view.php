@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="<?=base_url();?>application/css/colour.css" type="text/css" media="screen" charset="utf-8"/>
  		<link rel="stylesheet" href="<?=base_url();?>application/js/jqtp_latest/css/jqtp.css" type="text/css"/>
 		<link rel="stylesheet" href="<?=base_url();?>application/js/jqtp_latest/css/jqpopup.css" type="text/css">
+		<link rel="stylesheet" href="<?=base_url();?>application/js/jquery.fancybox-1.3.4/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen"/>
 
 		<script src="<?=base_url();?>application/js/jquery-1.4.2.js" type="text/javascript"></script>
 		<script src="<?=base_url();?>application/js/jquery-ui-1.8.1.js" type="text/javascript"></script>
@@ -17,6 +18,7 @@
 		<script src="<?=base_url();?>application/js/jqtp_latest/js/jquery.bgiframe.min.js" type="text/javascript"></script>
 		<script src="<?=base_url();?>application/js/jqtp_latest/js/jqDnR.min.js" type="text/javascript"></script>
 		<script src="<?=base_url();?>application/js/jqtp_latest/js/jquery.jqpopup.min.js" type="text/javascript"></script>
+		<script src="<?=base_url();?>application/js/jquery.fancybox-1.3.4/fancybox/jquery.fancybox-1.3.4.pack.js" type="text/javascript"></script>
 	</head>
 	<body>
 		<header id="header">
@@ -33,7 +35,7 @@
 						<input name="no" type="text" placeholder="No"/>
 					</p></div>
 					<div class="grid_2"><p>
-						<input name="tanggal" type="text" id="datepicker" placeholder="Tanggal" pattern="((19|20)\d\d[/]0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])" required/>
+						<input name="tanggal_bap" type="text" id="datepicker" placeholder="Tanggal BAP" pattern="((19|20)\d\d[/]0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])" required/>
 					</p></div>
 					<div class="grid_4"><p>
 						<select name="perusahaan" required>
@@ -125,12 +127,7 @@
 
 				<div class="grid_1">
 					<p>
-						<?php
-						$download_url = base_url()."pemeriksaan/download_xls";
-						if(isset($key)) $download_url .= "?key=$key";
-						?>
-
-						<a href='<?=$download_url;?>' class='error'>Download</a>
+						<a href='#download_filter' class='download error'>Download</a>
 					</p>
 				</div>
 
@@ -158,7 +155,7 @@
 						<thead>
 							<tr>
 								<th rowspan="2">No</th>
-								<th class='center' rowspan="2">Tanggal</th>
+								<th class='center' rowspan="2">Tanggal BAP</th>
 								<th rowspan="2">Perusahaan</th>
 								<th rowspan="2">No. PIB</th>
 								<th class='center' rowspan="2">Tgl PIB</th>
@@ -181,7 +178,7 @@
 							<?php
 							foreach($rows as $row){
 								extract($row);
-								$tanggal = str_replace("-", "/", $tanggal);
+								$tanggal_bap = str_replace("-", "/", $tanggal_bap);
 								$tgl_pib = str_replace("-", "/", $tgl_pib);
 								$tgl_sppb = str_replace("-", "/", $tgl_sppb);
 								$jam_ip = substr($jam_ip, 0, strlen($jam_ip)-3);
@@ -191,7 +188,7 @@
 								echo "
 									<tr>
 										<td id='col_no_$id' style='text-align:left;'>$no</td>
-										<td id='col_tanggal_$id' class='center'>$tanggal</td>
+										<td id='col_tanggal_$id' class='center'>$tanggal_bap</td>
 										<td id='col_perusahaan_$id'>$perusahaan</td>
 										<td id='col_no_pib_$id'>$no_pib</td>
 										<td id='col_tgl_pib_$id' class='center'>$tgl_pib</td>
@@ -257,6 +254,42 @@
 						</tfoot>
 					</table>
 				</div>
+
+				<div id="download_hider" style="display:none;">
+					<div id="download_filter">
+						<div class="grid_2"><p>
+							<input id="dw_tanggal_bap" type="text" class="datepicker3" placeholder="Tanggal BAP"/>
+						</p></div>
+						<div class="grid_2"><p>
+							<input id="dw_tanggal_sppb" type="text" class="datepicker4" placeholder="Tanggal SPPB"/>
+						</p></div>
+						<div class="grid_4" style="margin-left:20px;"><p>
+							<select id="dw_perusahaan" style="width:140px;">
+								<option value=''>[Pilih Perusahaan]</option>
+								<?php
+								foreach($list_perusahaan as $perusahaan){
+									extract($perusahaan);
+									echo "<option value='$kode'>$kode</option>";
+								} 
+								?>
+							</select>
+						</p></div>
+						<div class="grid_4" style="margin-left:20px;"><p>
+							<select id="dw_pemeriksa" style="width:140px;">
+								<option value=''>[Pilih Pemeriksa]</option>
+								<?php
+								foreach($list_pemeriksa as $pemeriksa){
+									extract($pemeriksa);
+									echo "<option value='$nama'>$nama</option>";
+								}
+								?>
+							</select>
+						</p></div>
+						<div class="grid_1"><p>
+							<input id="dw_submit" type="submit" value="Download"/>
+						</p></div>
+					</div>
+				</div>
 			</div>
 		</section>
 
@@ -311,6 +344,30 @@
 		$("#datepicker2").datepicker();
 		$("#datepicker3").datepicker();
 		$(".datepicker3").datepicker();
+		$(".datepicker4").datepicker();
+
+		$("a.download").fancybox({
+			overlayShow	: true,
+			transitionIn : 'elastic',
+			transitionOut : 'elastic',
+			showCloseButton : false,
+			onComplete : function(links, index){
+				$("#dw_submit").attr("onclick", "").click(function(){
+					var tanggal_bap = $("#dw_tanggal_bap").val();
+					var tanggal_sppb = $("#dw_tanggal_sppb").val();
+					var perusahaan = $("#dw_perusahaan").val();
+					var pemeriksa = $("#dw_pemeriksa").val();
+
+					document.location = "<?=base_url();?>pemeriksaan/download_xls?tanggal_bap=" + tanggal_bap + "&tgl_sppb=" + tanggal_sppb + "&perusahaan=" + perusahaan + "&pemeriksa=" + pemeriksa;
+				});
+			},
+			onClosed : function(){
+				$("#dw_tanggal_bap").val("");
+				$("#dw_tanggal_sppb").val("");
+				$("#dw_perusahaan").val("");
+				$("#dw_pemeriksa").val("");
+			}
+		});
 
 		// timepicker
         $("#jqtp_clock").jqtp();
@@ -569,7 +626,7 @@
 		var form_data = {
 			id: no,
 			no: $("#input_no_"+no).val(),
-			tanggal: $("#input_tanggal_"+no).val(),
+			tanggal_bap: $("#input_tanggal_"+no).val(),
 			perusahaan: $("#input_perusahaan_"+no).val(),
 			no_pib: $("#input_no_pib_"+no).val(),
 			tgl_pib: $("#input_tgl_pib_"+no).val(),
@@ -585,7 +642,7 @@
 			ajax: '1'
 		};
 
-		var parts = form_data.tanggal.split("/");
+		var parts = form_data.tanggal_bap.split("/");
 		var thn = parseInt(parts[0]);
 		var bln = parseInt(parts[1]);
 		var tgl = parseInt(parts[2]);
@@ -609,7 +666,7 @@
 					var status = $("#col_status_"+no).html();
 
 					$("#col_no_"+no).html(form_data.no);
-					$("#col_tanggal_"+no).html(form_data.tanggal);
+					$("#col_tanggal_"+no).html(form_data.tanggal_bap);
 					$("#col_perusahaan_"+no).html(form_data.perusahaan);
 					$("#col_no_pib_"+no).html(form_data.no_pib);
 					$("#col_tgl_pib_"+no).html(form_data.tgl_pib);

@@ -271,10 +271,15 @@ input[type="submit"], input[type="reset"] {
 #ip_row {
 	padding-top:15px;
 	background-color:#bbb;
-	width:990px;
+	width:1110px;
 	height:50px;
 }
 
+#download_filter {
+	padding-top:15px;
+	background-color:#bbb;
+	height:50px;
+}
 
 a.error {
 	position:relative;

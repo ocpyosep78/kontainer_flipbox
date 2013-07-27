@@ -9,7 +9,7 @@ class Kontainer_model extends CI_Model
 
 	function get_all_rows()
 	{
-		$kueri = "SELECT * FROM kontainer ORDER BY tanggal,no";
+		$kueri = "SELECT * FROM kontainer ORDER BY tanggal_masuk,no";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
 	}
@@ -17,18 +17,18 @@ class Kontainer_model extends CI_Model
 	function get_search_all_rows($key)
 	{
 		$keytanggal = str_replace("/", "-", $key);
-		$tanggal = "tanggal like '%$keytanggal%' OR";
-		if($key == '-') $tanggal = "";
-		$kueri = "SELECT * FROM kontainer WHERE no like '%$key%' OR $tanggal perusahaan like '%$key%'
+		$tanggal_masuk = "tanggal_masuk like '%$keytanggal%' OR";
+		if($key == '-') $tanggal_masuk= "";
+		$kueri = "SELECT * FROM kontainer WHERE no like '%$key%' OR $tanggal_masuk perusahaan like '%$key%'
 				OR kode like '%$key%' OR nomor like '%$key%' OR ukuran LIKE '%$key%'
-				ORDER BY tanggal,no";
+				ORDER BY tanggal_masuk,no";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
 	}
 
 	function get_rows($start, $limit)
 	{
-		$kueri = "SELECT * FROM kontainer ORDER BY tanggal,no LIMIT $start, $limit";
+		$kueri = "SELECT * FROM kontainer ORDER BY tanggal_masuk,no LIMIT $start, $limit";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
 	}
@@ -36,11 +36,11 @@ class Kontainer_model extends CI_Model
 	function get_search_rows($key, $start, $limit)
 	{
 		$keytanggal = str_replace("/", "-", $key);
-		$tanggal = "tanggal like '%$keytanggal%' OR";
-		if($key == '-') $tanggal = "";
-		$kueri = "SELECT * FROM kontainer WHERE no like '%$key%' OR $tanggal perusahaan like '%$key%'
+		$tanggal_masuk = "tanggal_masuk like '%$keytanggal%' OR";
+		if($key == '-') $tanggal_masuk= "";
+		$kueri = "SELECT * FROM kontainer WHERE no like '%$key%' OR $tanggal_masuk perusahaan like '%$key%'
 				OR kode like '%$key%' OR nomor like '%$key%' OR ukuran LIKE '%$key%'
-				ORDER BY tanggal,no LIMIT $start, $limit";
+				ORDER BY tanggal_masuk,no LIMIT $start, $limit";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
 	}
@@ -54,15 +54,18 @@ class Kontainer_model extends CI_Model
 
 	function insert($data)
 	{
-		$data['tanggal'] = str_replace("/", "-", $data['tanggal']);
+		$data['tanggal_masuk'] = str_replace("/", "-", $data['tanggal_masuk']);
 		
 		$this->db->insert('kontainer', $data);
 	}
 
 	function update($data)
 	{
-		if(isset($data['tanggal'])){
-			$data['tanggal'] = str_replace("/", "-", $data['tanggal']);
+		if(isset($data['tanggal_masuk'])){
+			$data['tanggal_masuk'] = str_replace("/", "-", $data['tanggal_masuk']);
+		}
+		if(isset($data['tanggal_bap'])){
+			$data['tanggal_bap'] = str_replace("/", "-", $data['tanggal_bap']);
 		}
 		if(isset($data['tgl_pib'])){
 			$data['tgl_pib'] = str_replace("/", "-", $data['tgl_pib']);
@@ -93,10 +96,14 @@ class Kontainer_model extends CI_Model
 		return intval(($numrows-1)/30) + 1;
 	}
 
-	function get_xls_rows()
+	function get_xls_rows($tanggal_masuk = "", $perusahaan = "")
 	{
-		$kueri = "SELECT no,tanggal,perusahaan,kode,nomor,ukuran,uraian,tgl_ip,tgl_sppb FROM kontainer ORDER BY tanggal,no";
-		$ret = $this->db->query($kueri)->result_array();
+		$this->db->select("no,tanggal_masuk,perusahaan,kode,nomor,ukuran,uraian,tgl_ip,tgl_sppb");
+		$this->db->from("kontainer");
+		if($tanggal_masuk) $this->db->where("tanggal_masuk", $tanggal_masuk);
+		if($perusahaan) $this->db->where("perusahaan", $perusahaan);
+		$this->db->order_by("tanggal_masuk,no", "asc");
+		$ret = $this->db->get()->result_array();
 		return $ret;
 	}
 }

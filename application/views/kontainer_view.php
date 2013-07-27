@@ -35,7 +35,7 @@
 						<input name="no" type="text" placeholder="No"/>
 					</p></div>
 					<div class="grid_2"><p>
-						<input name="tanggal" type="text" id="datepicker" placeholder="Tanggal" pattern="((19|20)\d\d[/]0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])" required/>
+						<input name="tanggal_masuk" type="text" id="datepicker" placeholder="Tanggal Masuk" pattern="((19|20)\d\d[/]0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])" required/>
 					</p></div>
 					<div class="grid_4"><p>
 						<select name="perusahaan" required>
@@ -89,12 +89,7 @@
 				</form>
 				<div class="grid_1">
 					<p>
-						<?php
-						$download_url = base_url()."kontainer/download_xls";
-						if(isset($key)) $download_url .= "?key=$key";
-						?>
-
-						<a href='<?=$download_url;?>' class='error'>Download</a>
+						<a href='#download_filter' class='download error'>Download</a>
 					</p>
 				</div>
 
@@ -115,7 +110,7 @@
 						<thead>
 							<tr>
 								<th>No.</th>
-								<th class='center'>Tanggal</th>
+								<th class='center'>Tanggal Masuk</th>
 								<th>Perusahaan</th>
 								<th>Kode Kontainer</th>
 								<th>No. Kontainer</th>
@@ -127,10 +122,10 @@
 							<?php
 							foreach($rows as $row){
 								extract($row);
-								$tanggal = str_replace("-", "/", $tanggal);
+								$tanggal_masuk = str_replace("-", "/", $tanggal_masuk);
 								
 								$today = date('Y/m/d');
-								$t_tanggal = strtotime($tanggal);
+								$t_tanggal = strtotime($tanggal_masuk);
 								$t_today = strtotime($today);
 								$difsecs = $t_today - $t_tanggal;
 								$difday = $difsecs / (24*60*60) + 1;
@@ -140,7 +135,7 @@
 
 								echo "
 										<td id='col_no_$id' style='text-align:left;'>$no</td>
-										<td id='col_tanggal_$id' class='center'>$tanggal</td>
+										<td id='col_tanggal_$id' class='center'>$tanggal_masuk</td>
 										<td id='col_perusahaan_$id'>$perusahaan</td>
 										<td id='col_kode_$id'>$kode</td>
 										<td id='col_nomor_$id'>$nomor</td>
@@ -202,6 +197,9 @@
 				<div id="ip_hider" style="display:none;">
 					<div id="ip_row">
 						<div class="grid_2"><p>
+							<input id="ip_tanggal_bap" type="text" class="datepicker3" placeholder="Tanggal BAP"/>
+						</p></div>
+						<div class="grid_2"><p>
 							<input id="ip_no_pib" type="text" placeholder="No. PIB"/>
 						</p></div>
 						<div class="grid_2"><p>
@@ -237,6 +235,28 @@
 						</p></div>
 						<div class="grid_1"><p>
 							<input id="ip_submit" type="submit" value="IP"/>
+						</p></div>
+					</div>
+				</div>
+
+				<div id="download_hider" style="display:none;">
+					<div id="download_filter">
+						<div class="grid_2"><p>
+							<input id="dw_tanggal_masuk" type="text" class="datepicker3" placeholder="Tanggal Masuk"/>
+						</p></div>
+						<div class="grid_4" style="margin-left:20px;"><p>
+							<select id="dw_perusahaan" style="width:140px;">
+								<option value=''>[Pilih Perusahaan]</option>
+								<?php
+								foreach($list_perusahaan as $perusahaan){
+									extract($perusahaan);
+									echo "<option value='$kode'>$kode</option>";
+								}
+								?>
+							</select>
+						</p></div>
+						<div class="grid_1"><p>
+							<input id="dw_submit" type="submit" value="Download"/>
 						</p></div>
 					</div>
 				</div>
@@ -301,6 +321,7 @@
 		      	ip_row(no);
 			},
 			onClosed : function(){
+				$("#ip_tanggal_bap").val("");
 				$("#ip_no_pib").val("");
 				$("#ip_tgl_pib").val("");
 				$("#ip_jam_ip").val("");
@@ -311,6 +332,25 @@
 				$("#ip_tgl_sppb").val("");
 
 				if(isJqtpOpen) $("#jqtp_clockDiv").jqpopup_close(this.id);
+			}
+		});
+
+		$("a.download").fancybox({
+			overlayShow	: true,
+			transitionIn : 'elastic',
+			transitionOut : 'elastic',
+			showCloseButton : false,
+			onComplete : function(links, index){
+				$("#dw_submit").attr("onclick", "").click(function(){
+					var tanggal_masuk = $("#dw_tanggal_masuk").val();
+					var perusahaan = $("#dw_perusahaan").val();
+
+					document.location = "<?=base_url();?>kontainer/download_xls?tanggal_masuk=" + tanggal_masuk + "&perusahaan=" + perusahaan;
+				});
+			},
+			onClosed : function(){
+				$("#dw_tanggal_masuk").val("");
+				$("#dw_perusahaan").val("");
 			}
 		});
 	});
@@ -397,6 +437,7 @@
 
 	function ip_submit(no)
 	{
+		var tanggal_bap = $("#ip_tanggal_bap").val();
 		var no_pib = $("#ip_no_pib").val();
 		var tgl_pib = $("#ip_tgl_pib").val();
 		var jam_ip = $("#ip_jam_ip").val();
@@ -411,7 +452,7 @@
 		if(isset($key)) $back_url = urlencode(base_url()."kontainer/search?key=".$key."&page=".$page);
 		?>
 
-		document.location = "<?=base_url();?>kontainer/ip/"+no+"?no_pib="+no_pib+"&tgl_pib="+tgl_pib+"&jam_ip="+jam_ip+"&jam_periksa_st="+jam_periksa_st+"&jam_periksa_en="+jam_periksa_en+"&uraian="+uraian+"&pemeriksa="+pemeriksa+"&back_url=<?=$back_url;?>"+"&tgl_sppb="+tgl_sppb;
+		document.location = "<?=base_url();?>kontainer/ip/"+no+"?tanggal_bap="+tanggal_bap+"&no_pib="+no_pib+"&tgl_pib="+tgl_pib+"&jam_ip="+jam_ip+"&jam_periksa_st="+jam_periksa_st+"&jam_periksa_en="+jam_periksa_en+"&uraian="+uraian+"&pemeriksa="+pemeriksa+"&back_url=<?=$back_url;?>"+"&tgl_sppb="+tgl_sppb;
 	}
 
 	function edit_row(no)
@@ -477,7 +518,7 @@
 		var form_data = {
 			id: no,
 			no: $("#input_no_"+no).val(),
-			tanggal: $("#input_tanggal_"+no).val(),
+			tanggal_masuk: $("#input_tanggal_"+no).val(),
 			perusahaan: $("#input_perusahaan_"+no).val(),
 			kode: $("#input_kode_"+no).val(),
 			nomor: $("#input_nomor_"+no).val(),
@@ -485,7 +526,7 @@
 			ajax: '1'
 		};
 
-		var parts = form_data.tanggal.split("/");
+		var parts = form_data.tanggal_masuk.split("/");
 		var thn = parseInt(parts[0]);
 		var bln = parseInt(parts[1]);
 		var tgl = parseInt(parts[2]);
@@ -499,7 +540,7 @@
 					var status = $("#col_status_"+no).html();
 
 					$("#col_no_"+no).html(form_data.no);
-					$("#col_tanggal_"+no).html(form_data.tanggal);
+					$("#col_tanggal_"+no).html(form_data.tanggal_masuk);
 					$("#col_perusahaan_"+no).html(form_data.perusahaan);
 					$("#col_kode_"+no).html(form_data.kode);
 					$("#col_nomor_"+no).html(form_data.nomor);

@@ -9,7 +9,7 @@ $count_ukuran = count($list_ukuran);
 	<?php if($flag == 1){ ?>
 		<tr>
 			<th style="text-align:center;" rowspan="2">No.</th>
-			<th style="text-align:center;" rowspan="2">Tanggal</th>
+			<th style="text-align:center;" rowspan="2">Tanggal Masuk</th>
 			<th style="text-align:center;" rowspan="2">Perusahaan</th>
 			<th style="text-align:center;" colspan="2" rowspan="2">Nomor Kontainer</th>
 			<th style="text-align:center;" colspan="<?=$count_ukuran?>">Ukuran</th>
@@ -28,7 +28,7 @@ $count_ukuran = count($list_ukuran);
 	<?php }elseif($flag == 2){ ?>
 		<tr>
 			<th style="text-align:center;" rowspan="2">No.</th>
-			<th style="text-align:center;" rowspan="2">Tanggal</th>
+			<th style="text-align:center;" rowspan="2">Tanggal BAP</th>
 			<th style="text-align:center;" rowspan="2">Perusahaan</th>
 			<th style="text-align:center;" rowspan="2">No. PIB</th>
 			<th style="text-align:center;" rowspan="2">Tanggal PIB</th>

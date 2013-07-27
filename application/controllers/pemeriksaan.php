@@ -87,7 +87,7 @@ class Pemeriksaan extends CI_Controller
 	{
 		$data['id'] = $_POST['id'];
 		$data['no'] = $_POST['no'];
-		$data['tanggal'] = $_POST['tanggal'];
+		$data['tanggal_bap'] = $_POST['tanggal_bap'];
 		$data['perusahaan'] = $_POST['perusahaan'];
 		$data['no_pib'] = $_POST['no_pib'];
 		$data['tgl_pib'] = $_POST['tgl_pib'];
@@ -116,10 +116,12 @@ class Pemeriksaan extends CI_Controller
 
 	function download_xls()
 	{
+		extract($_GET);
+
 		$data['flag'] = 2;
 		$data['filename'] = "2. Daftar Insttruksi Pemeriksaan.xls";
-		$data['row_keys'] = Array("no", "tanggal", "perusahaan", "no_pib", "tgl_pib","kode", "nomor", "ukuran", "jam_ip", "jam_periksa_st", "jam_periksa_en","uraian", "pemeriksa", "tgl_sppb");
-		$data['rows'] = $this->pemeriksaan->get_xls_rows();
+		$data['row_keys'] = Array("no", "tanggal_bap", "perusahaan", "no_pib", "tgl_pib","kode", "nomor", "ukuran", "jam_ip", "jam_periksa_st", "jam_periksa_en","uraian", "pemeriksa", "tgl_sppb");
+		$data['rows'] = $this->pemeriksaan->get_xls_rows($tanggal_bap, $tgl_sppb, $perusahaan, $pemeriksa);
 		$data['list_ukuran'] = $this->ukuran->get_all_ukuran();
 		
 		$this->load->view('download_xls', $data);
