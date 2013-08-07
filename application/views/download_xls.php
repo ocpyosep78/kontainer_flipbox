@@ -1,6 +1,6 @@
 <?php 
-// header("Content-type: application/vnd.ms-excel");
-// header("Content-disposition: attachment; filename=\"$filename\"");
+header("Content-type: application/vnd.ms-excel");
+header("Content-disposition: attachment; filename=\"$filename\"");
 
 $count_ukuran = count($list_ukuran);
 ?>
