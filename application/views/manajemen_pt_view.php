@@ -42,11 +42,12 @@
 				</form>
 
 				
-				<div class="grid_14">
+				<div class="grid_12">
 					<p>&nbsp;</p>
 				</div>
+
 				<form method='POST' action='<?=base_url();?>manajemen_pt/search'>
-					<div class="grid_5">
+					<div class="grid_5" style='margin-left:20px;'>
 						<p>
 							<input type="text" name='search' placeholder="Search Table"/>
 						</p>
@@ -57,14 +58,19 @@
 						</p>
 					</div>
 				</form>
-				<div class="grid_1">
+				<div class="grid_1" style="margin-right:45px;">
 					<p>
 						<?php
 						$download_url = base_url()."manajemen_pt/download_xls";
 						if(isset($key)) $download_url .= "?key=$key";
 						?>
 
-						<a href='<?=$download_url;?>' class='error'>Download</a>
+						<a href='<?=$download_url;?>' class='error'>Download#1</a>
+					</p>
+				</div>
+				<div class="grid_1">
+					<p>
+						<a href='#download_filter' class='download error'>Download#2</a>
 					</p>
 				</div>
 
@@ -145,7 +151,18 @@
 							</tr>
 						</tfoot>
 					</table>
-				</div>`
+				</div>
+
+				<div id="download_hider" style="display:none;">
+					<div id="download_filter">
+						<div class="grid_2"><p>
+							<input id="dw_tanggal" type="text" class="datepicker" placeholder="Tanggal"/>
+						</p></div>
+						<div class="grid_1"><p>
+							<input id="dw_submit" type="submit" value="Download"/>
+						</p></div>
+					</div>
+				</div>
 			</div>
 		</section>
 
@@ -167,6 +184,25 @@
 
 	$(document).ready(function(){ 
         $("#dataList").tablesorter(); 
+
+        $(".datepicker").datepicker();
+
+        $("a.download").fancybox({
+			overlayShow	: true,
+			transitionIn : 'elastic',
+			transitionOut : 'elastic',
+			showCloseButton : false,
+			onComplete : function(links, index){
+				$("#dw_submit").attr("onclick", "").click(function(){
+					var tglx = $("#dw_tanggal").val();
+
+					document.location = "<?=base_url();?>manajemen_pt/download_xls3?tglx=" + tglx;
+				});
+			},
+			onClosed : function(){
+				$("#dw_tanggal").val("");
+			}
+		});
 	});
 
 	function edit_row(no)

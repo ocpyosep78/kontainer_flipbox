@@ -85,8 +85,8 @@ class Pemeriksaan extends CI_Controller
 
 	function update()
 	{
-		$data['id'] = $_POST['id'];
 		$data['no'] = $_POST['no'];
+		$data['no_bap'] = $_POST['no_bap'];
 		$data['tanggal_bap'] = $_POST['tanggal_bap'];
 		$data['perusahaan'] = $_POST['perusahaan'];
 		$data['no_pib'] = $_POST['no_pib'];
@@ -119,12 +119,24 @@ class Pemeriksaan extends CI_Controller
 		extract($_GET);
 
 		$data['flag'] = 2;
-		$data['filename'] = "2. Daftar Insttruksi Pemeriksaan.xls";
-		$data['row_keys'] = Array("no", "tanggal_bap", "perusahaan", "no_pib", "tgl_pib","kode", "nomor", "ukuran", "jam_ip", "jam_periksa_st", "jam_periksa_en","uraian", "pemeriksa", "tgl_sppb");
+		$data['filename'] = "Daftar Instruksi Pemeriksaan.xls";
+		$data['row_keys'] = Array("no", "no_bap", "tanggal_bap", "perusahaan", "no_pib", "tgl_pib","kode", "nomor", "ukuran", "jam_ip", "jam_periksa_st", "jam_periksa_en","uraian", "pemeriksa", "tgl_sppb");
 		$data['rows'] = $this->pemeriksaan->get_xls_rows($tanggal_bap, $tgl_sppb, $perusahaan, $pemeriksa);
 		$data['list_ukuran'] = $this->ukuran->get_all_ukuran();
 		
 		$this->load->view('download_xls', $data);
+	}
+
+	function download_xls2()
+	{
+		extract($_GET);
+
+		$data['filename'] = "Laporan Situasi Kontainer.xls";
+		$data['row_keys'] = Array("no", "tanggal_masuk", "perusahaan", "kode", "nomor", "ukuran", "no_bap", "tgl_ip", "no_pib", "tgl_pib", "jam_ip", "jam_periksa_st", "jam_periksa_en", "uraian", "pemeriksa", "tgl_sppb");
+		$data['rows'] = $this->pemeriksaan->get_xls_rows2($tanggal_masuk, $tanggal_bap, $tgl_sppb, $perusahaan, $pemeriksa);
+		$data['list_ukuran'] = $this->ukuran->get_all_ukuran();
+		
+		$this->load->view('download_xls2', $data);
 	}
 }
 

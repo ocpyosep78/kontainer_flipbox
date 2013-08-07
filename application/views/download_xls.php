@@ -1,6 +1,6 @@
 <?php 
-header("Content-type: application/vnd.ms-excel");
-header("Content-disposition: attachment; filename=\"$filename\"");
+// header("Content-type: application/vnd.ms-excel");
+// header("Content-disposition: attachment; filename=\"$filename\"");
 
 $count_ukuran = count($list_ukuran);
 ?>
@@ -28,6 +28,7 @@ $count_ukuran = count($list_ukuran);
 	<?php }elseif($flag == 2){ ?>
 		<tr>
 			<th style="text-align:center;" rowspan="2">No.</th>
+			<th style="text-align:center;" rowspan="2">No BAP</th>
 			<th style="text-align:center;" rowspan="2">Tanggal BAP</th>
 			<th style="text-align:center;" rowspan="2">Perusahaan</th>
 			<th style="text-align:center;" rowspan="2">No. PIB</th>
@@ -80,7 +81,7 @@ $count_ukuran = count($list_ukuran);
 						else echo "<td style='text-align:center;'>0</td>";
 					}
 				}else{
-					if($row_key == "tanggal" || $row_key == "tgl_pib" || $row_key == "tgl_sppb" || $row_key == "tgl_ip"){
+					if($row_key == "tanggal_masuk" || $row_key == "tanggal_bap" || $row_key == "tgl_pib" || $row_key == "tgl_sppb" || $row_key == "tgl_ip"){
 						$cell = str_replace("-", "/", $cell);
 					}
 					if($row_key == "jam_ip" || $row_key == "jam_periksa_st" || $row_key == "jam_periksa_en"){

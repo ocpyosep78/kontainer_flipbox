@@ -83,7 +83,7 @@ class Manajemen_pt extends CI_Controller
 	function download_xls()
 	{
 		$data['flag'] = 3;
-		$data['filename'] = "3. Rekap Owner Perusahaan & Jumlah Kontainer.xls";
+		$data['filename'] = "Rekap Owner Perusahaan & Jumlah Kontainer.xls";
 		$data['rows'] = $this->perusahaan->get_xls_rows();
 		$data['list_ukuran'] = $this->ukuran->get_all_ukuran();
 		$data['kontainer_per_ukuran'] = $this->get_kontainer_per_ukuran($data['rows'], $data['list_ukuran']);
@@ -99,6 +99,39 @@ class Manajemen_pt extends CI_Controller
 			foreach($list_ukuran as $ukuran){
 				$ukuran = $ukuran['ukuran'];
 				$ret[$owner][$ukuran] = $this->perusahaan->get_jumlah_kontainer_ukuran($owner,$ukuran);
+			}
+		}
+		return $ret;
+	}
+
+	function download_xls3()
+	{
+		$tglx = $this->input->get("tglx");
+		if(!$tglx) $tglx = date("Y-m-d");
+
+		$data['filename'] = "Rekapitulasi Kontainer.xls";
+		$data['rows'] = $this->perusahaan->get_all_rows();
+		$data['list_ukuran'] = $this->ukuran->get_all_ukuran();
+		$data['rekap'] = $this->get_kontainer_per_ukuran2($data['rows'], $data['list_ukuran'], $tglx);
+		$data['tglx'] = $tglx;
+		
+		$this->load->view('download_xls3', $data);
+	}
+
+	function get_kontainer_per_ukuran2($rows, $list_ukuran, $tglx)
+	{
+		$ret;
+		foreach($rows as $row){
+			$kode = $row['kode'];
+			foreach($list_ukuran as $ukuran){
+				$ukuran = $ukuran['ukuran'];
+				$ret[$kode][$ukuran]['jml_lalu'] = $this->perusahaan->get_jumlah_kontainer_jml_lalu($kode, $ukuran, $tglx);
+				$ret[$kode][$ukuran]['sisa_lalu'] = $this->perusahaan->get_jumlah_kontainer_sisa_lalu($kode, $ukuran, $tglx);
+				$ret[$kode][$ukuran]['masuk_hari_ini'] = $this->perusahaan->get_jumlah_kontainer_masuk_hari_ini($kode, $ukuran, $tglx);
+				$ret[$kode][$ukuran]['ip'] = $this->perusahaan->get_jumlah_kontainer_ip($kode, $ukuran, $tglx);
+				$ret[$kode][$ukuran]['sppb'] = $this->perusahaan->get_jumlah_kontainer_sppb($kode, $ukuran, $tglx);
+				$ret[$kode][$ukuran]['sisa'] = $this->perusahaan->get_jumlah_kontainer_sisa($kode, $ukuran, $tglx);
+				$ret[$kode][$ukuran]['jumlah'] = $this->perusahaan->get_jumlah_kontainer_jumlah($kode, $ukuran, $tglx);
 			}
 		}
 		return $ret;

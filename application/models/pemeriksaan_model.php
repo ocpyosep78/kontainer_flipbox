@@ -24,7 +24,7 @@ class Pemeriksaan_model extends CI_Model
 	function get_search_all_rows($key)
 	{
 		$keytanggal = str_replace("/", "-", $key);
-		$tanggal_bap = "OR tanggal like '%$keytanggal%'";
+		$tanggal_bap = "OR tanggal_bap like '%$keytanggal%'";
 		$tgl_pib = "OR tgl_pib like '%$keytanggal%'";
 		$tgl_sppb = "OR tgl_sppb like '%$keytanggal%'";
 		if($key == '-'){
@@ -33,7 +33,7 @@ class Pemeriksaan_model extends CI_Model
 			$tgl_sppb = "";
 		}
 
-		$kueri = "SELECT * FROM kontainer WHERE status >= 1 AND (no LIKE '%$key%' $tanggal_bap OR perusahaan LIKE '%$key%'
+		$kueri = "SELECT * FROM kontainer WHERE status >= 1 AND (no LIKE '%$key%' OR no_bap LIKE '%$key%' $tanggal_bap OR perusahaan LIKE '%$key%'
 				OR kode LIKE '%$key%' OR nomor LIKE '%$key%' OR ukuran LIKE '%$key%' OR no_pib LIKE '%$key%' $tgl_pib
 				OR jam_ip LIKE '%$key%' OR jam_periksa_st LIKE '%$key%' OR jam_periksa_en LIKE '%$key%' OR uraian LIKE '%$key%' OR pemeriksa LIKE '%$key%' $tgl_sppb)
 				ORDER BY tanggal_bap,no";
@@ -44,7 +44,7 @@ class Pemeriksaan_model extends CI_Model
 	function get_search_rows($key, $start, $limit)
 	{
 		$keytanggal = str_replace("/", "-", $key);
-		$tanggal_bap = "OR tanggal like '%$keytanggal%'";
+		$tanggal_bap = "OR tanggal_bap like '%$keytanggal%'";
 		$tgl_pib = "OR tgl_pib like '%$keytanggal%'";
 		$tgl_sppb = "OR tgl_sppb like '%$keytanggal%'";
 		if($key == '-'){
@@ -53,7 +53,7 @@ class Pemeriksaan_model extends CI_Model
 			$tgl_sppb = "";
 		}
 
-		$kueri = "SELECT * FROM kontainer WHERE status >= 1 AND (no LIKE '%$key%' $tanggal_bap OR perusahaan LIKE '%$key%'
+		$kueri = "SELECT * FROM kontainer WHERE status >= 1 AND (no LIKE '%$key%' OR no_bap LIKE '%$key%' $tanggal_bap OR perusahaan LIKE '%$key%'
 				OR kode LIKE '%$key%' OR nomor LIKE '%$key%' OR ukuran LIKE '%$key%' OR no_pib LIKE '%$key%' $tgl_pib
 				OR jam_ip LIKE '%$key%' OR jam_periksa_st LIKE '%$key%' OR jam_periksa_en LIKE '%$key%' OR uraian LIKE '%$key%' OR pemeriksa LIKE '%$key%' $tgl_sppb)
 				ORDER BY tanggal_bap,no LIMIT $start, $limit";
@@ -63,7 +63,7 @@ class Pemeriksaan_model extends CI_Model
 
 	function get_row($no)
 	{
-		$kueri = "SELECT * FROM kontainer WHERE status >= 1 AND id = $no";
+		$kueri = "SELECT * FROM kontainer WHERE status >= 1 AND no = $no";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
 	}
@@ -96,7 +96,7 @@ class Pemeriksaan_model extends CI_Model
 			$data['tgl_sppb'] = str_replace("/", "-", $data['tgl_sppb']);
 		}
 
-		$this->db->where('id', $data['id']);
+		$this->db->where('no', $data['no']);
 		$ret = $this->db->update('kontainer', $data); 
 		return $ret;
 	}
@@ -104,6 +104,7 @@ class Pemeriksaan_model extends CI_Model
 	function delete($no)
 	{
 		$data['status'] = '0';
+		$data['no_bap'] = NULL;
 		$data['tanggal_bap'] = NULL;
 		$data['no_pib'] = NULL;
 		$data['tgl_pib'] = NULL;
@@ -113,7 +114,7 @@ class Pemeriksaan_model extends CI_Model
 		$data['uraian'] = NULL;
 		$data['pemeriksa'] = NULL;
 		$data['tgl_sppb'] = NULL;
-		$this->db->where('id', $no);
+		$this->db->where('no', $no);
 		$ret = $this->db->update('kontainer', $data); 
 	}
 
@@ -131,8 +132,9 @@ class Pemeriksaan_model extends CI_Model
 
 	function get_xls_rows($tanggal_bap = "", $tgl_sppb = "", $perusahaan = "", $pemeriksa = "")
 	{
-		$this->db->select("no,tanggal_bap,perusahaan,no_pib,tgl_pib,kode,nomor,ukuran,jam_ip,jam_periksa_st,jam_periksa_en,uraian,pemeriksa,tgl_sppb");
+		$this->db->select("no,no_bap,tanggal_bap,perusahaan,no_pib,tgl_pib,kode,nomor,ukuran,jam_ip,jam_periksa_st,jam_periksa_en,uraian,pemeriksa,tgl_sppb");
 		$this->db->from("kontainer");
+		$this->db->where("status >=", 1);
 		if($tanggal_bap) $this->db->where("tanggal_bap", $tanggal_bap);
 		if($tgl_sppb) $this->db->where("tgl_sppb", $tgl_sppb);
 		if($perusahaan) $this->db->where("perusahaan", $perusahaan);
@@ -141,4 +143,19 @@ class Pemeriksaan_model extends CI_Model
 		$ret = $this->db->get()->result_array();
 		return $ret;
 	}
+
+	function get_xls_rows2($tanggal_masuk = "", $tanggal_bap = "", $tgl_sppb = "", $perusahaan = "", $pemeriksa = "")
+	{
+		$this->db->where("status >=", 1);
+		if($tanggal_masuk) $this->db->where("tanggal_masuk", $tanggal_masuk);
+		if($tanggal_bap) $this->db->where("tanggal_bap", $tanggal_bap);
+		if($tgl_sppb) $this->db->where("tgl_sppb", $tgl_sppb);
+		if($perusahaan) $this->db->where("perusahaan", $perusahaan);
+		if($pemeriksa) $this->db->where("pemeriksa", $pemeriksa);
+		$this->db->order_by("tanggal_bap,no", "asc");
+		$ret = $this->db->get("kontainer")->result_array();
+		return $ret;
+	}
 }
+
+

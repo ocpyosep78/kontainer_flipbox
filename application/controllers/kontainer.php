@@ -78,8 +78,9 @@ class Kontainer extends CI_Controller
 	function ip($no)
 	{
 		extract($_GET);
-		$data['id'] = $no;
+		$data['no'] = $no;
 		$data['status'] = '1';
+		if(isset($no_bap) && $no_bap != "") $data['no_bap'] = $no_bap;
 		if(isset($tanggal_bap) && $tanggal_bap != "") $data['tanggal_bap'] = $tanggal_bap;
 		if(isset($no_pib) && $no_pib != "") $data['no_pib'] = $no_pib;
 		if(isset($tgl_pib) && $tgl_pib != "") $data['tgl_pib'] = $tgl_pib;
@@ -110,7 +111,6 @@ class Kontainer extends CI_Controller
 
 	function update()
 	{
-		$data['id'] = $_POST['id'];
 		$data['no'] = $_POST['no'];
 		$data['tanggal_masuk'] = $_POST['tanggal_masuk'];
 		$data['perusahaan'] = $_POST['perusahaan'];
@@ -125,7 +125,7 @@ class Kontainer extends CI_Controller
 		extract($_GET);
 
 		$data['flag'] = 1;
-		$data['filename'] = "1. Situasi Kontainer Masuk.xls";
+		$data['filename'] = "Situasi Kontainer Masuk.xls";
 		$data['row_keys'] = Array("no", "tanggal_masuk", "perusahaan", "kode", "nomor", "ukuran", "uraian", "tgl_ip", "tgl_sppb");
 		$data['rows'] = $this->kontainer->get_xls_rows($tanggal_masuk, $perusahaan);
 		$data['list_ukuran'] = $this->ukuran->get_all_ukuran();

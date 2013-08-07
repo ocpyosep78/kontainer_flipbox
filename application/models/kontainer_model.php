@@ -18,7 +18,7 @@ class Kontainer_model extends CI_Model
 	{
 		$keytanggal = str_replace("/", "-", $key);
 		$tanggal_masuk = "tanggal_masuk like '%$keytanggal%' OR";
-		if($key == '-') $tanggal_masuk= "";
+		if($key == '-') $tanggal_masuk = "";
 		$kueri = "SELECT * FROM kontainer WHERE no like '%$key%' OR $tanggal_masuk perusahaan like '%$key%'
 				OR kode like '%$key%' OR nomor like '%$key%' OR ukuran LIKE '%$key%'
 				ORDER BY tanggal_masuk,no";
@@ -37,7 +37,7 @@ class Kontainer_model extends CI_Model
 	{
 		$keytanggal = str_replace("/", "-", $key);
 		$tanggal_masuk = "tanggal_masuk like '%$keytanggal%' OR";
-		if($key == '-') $tanggal_masuk= "";
+		if($key == '-') $tanggal_masuk = "";
 		$kueri = "SELECT * FROM kontainer WHERE no like '%$key%' OR $tanggal_masuk perusahaan like '%$key%'
 				OR kode like '%$key%' OR nomor like '%$key%' OR ukuran LIKE '%$key%'
 				ORDER BY tanggal_masuk,no LIMIT $start, $limit";
@@ -47,7 +47,7 @@ class Kontainer_model extends CI_Model
 
 	function get_row($no)
 	{
-		$kueri = "SELECT * FROM kontainer WHERE id = $no";
+		$kueri = "SELECT * FROM kontainer WHERE no = $no";
 		$ret = $this->db->query($kueri)->result_array();
 		return $ret;
 	}
@@ -73,14 +73,14 @@ class Kontainer_model extends CI_Model
 		if(isset($data['tgl_sppb'])){
 			$data['tgl_sppb'] = str_replace("/", "-", $data['tgl_sppb']);
 		}
-		$this->db->where('id', $data['id']);
+		$this->db->where('no', $data['no']);
 		$ret = $this->db->update('kontainer', $data); 
 		return $ret;
 	}
 
 	function delete($no)
 	{
-		$kueri = "DELETE FROM kontainer WHERE id = $no";
+		$kueri = "DELETE FROM kontainer WHERE no = $no";
 		$this->db->query($kueri);
 	}
 

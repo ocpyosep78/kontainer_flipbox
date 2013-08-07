@@ -31,9 +31,9 @@
 		<section id="section">
 			<div id="content" class="container_16 clearfix">
 				<form method="post" action="<?=site_url('kontainer/entry')?>">
-					<div class="grid_1"><p>
-						<input name="no" type="text" placeholder="No"/>
-					</p></div>
+					<!-- <div class="grid_1"><p>
+						<input name="no" type="text" placeholder="No" disabled/>
+					</p></div> -->
 					<div class="grid_2"><p>
 						<input name="tanggal_masuk" type="text" id="datepicker" placeholder="Tanggal Masuk" pattern="((19|20)\d\d[/]0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])" required/>
 					</p></div>
@@ -134,20 +134,20 @@
 								else echo "<tr>";
 
 								echo "
-										<td id='col_no_$id' style='text-align:left;'>$no</td>
-										<td id='col_tanggal_$id' class='center'>$tanggal_masuk</td>
-										<td id='col_perusahaan_$id'>$perusahaan</td>
-										<td id='col_kode_$id'>$kode</td>
-										<td id='col_nomor_$id'>$nomor</td>
-										<td id='col_ukuran_$id' class='center'>$ukuran</td>
-										<td id='col_ip_$id' class='center'>";
-			   	if($status == '0') echo 	"<a href='#ip_row' class='ip ip_button' no='$id'></a></td>"; 
+										<td id='col_no_$no' style='text-align:left;'>$no</td>
+										<td id='col_tanggal_$no' class='center'>$tanggal_masuk</td>
+										<td id='col_perusahaan_$no'>$perusahaan</td>
+										<td id='col_kode_$no'>$kode</td>
+										<td id='col_nomor_$no'>$nomor</td>
+										<td id='col_ukuran_$no' class='center'>$ukuran</td>
+										<td id='col_ip_$no' class='center'>";
+			   	if($status == '0') echo 	"<a href='#ip_row' class='ip ip_button' no='$no'></a></td>"; 
 				else echo 					"<a href='#' class='unip'></a></td>";
-				echo "					<td id='col_edit_$id' class='center'><a href='#' onclick=\"edit_row('$id')\" class='edit'></a></td>
-										<td id='col_delete_$id' class='center'><a href='#' onclick=\"confirm_delete_row('$id')\" class='trash'></a></td>
+				echo "					<td id='col_edit_$no' class='center'><a href='#' onclick=\"edit_row('$no')\" class='edit'></a></td>
+										<td id='col_delete_$no' class='center'><a href='#' onclick=\"confirm_delete_row('$no')\" class='trash'></a></td>
 									</tr>
 									<tr style='display:none'>
-										<td id='col_status_$id'>$status</td>
+										<td id='col_status_$no'>$status</td>
 									</tr>
 								";
 							}
@@ -196,6 +196,9 @@
 
 				<div id="ip_hider" style="display:none;">
 					<div id="ip_row">
+						<div class="grid_2"><p>
+							<input id="ip_no_bap" type="text" placeholder="No BAP"/>
+						</p></div>
 						<div class="grid_2"><p>
 							<input id="ip_tanggal_bap" type="text" class="datepicker3" placeholder="Tanggal BAP"/>
 						</p></div>
@@ -321,6 +324,7 @@
 		      	ip_row(no);
 			},
 			onClosed : function(){
+				$("#ip_no_bap").val("");
 				$("#ip_tanggal_bap").val("");
 				$("#ip_no_pib").val("");
 				$("#ip_tgl_pib").val("");
@@ -437,6 +441,7 @@
 
 	function ip_submit(no)
 	{
+		var no_bap = $("#ip_no_bap").val();
 		var tanggal_bap = $("#ip_tanggal_bap").val();
 		var no_pib = $("#ip_no_pib").val();
 		var tgl_pib = $("#ip_tgl_pib").val();
@@ -452,7 +457,7 @@
 		if(isset($key)) $back_url = urlencode(base_url()."kontainer/search?key=".$key."&page=".$page);
 		?>
 
-		document.location = "<?=base_url();?>kontainer/ip/"+no+"?tanggal_bap="+tanggal_bap+"&no_pib="+no_pib+"&tgl_pib="+tgl_pib+"&jam_ip="+jam_ip+"&jam_periksa_st="+jam_periksa_st+"&jam_periksa_en="+jam_periksa_en+"&uraian="+uraian+"&pemeriksa="+pemeriksa+"&back_url=<?=$back_url;?>"+"&tgl_sppb="+tgl_sppb;
+		document.location = "<?=base_url();?>kontainer/ip/"+no+"?tanggal_bap="+tanggal_bap+"&no_bap="+no_bap+"&no_pib="+no_pib+"&tgl_pib="+tgl_pib+"&jam_ip="+jam_ip+"&jam_periksa_st="+jam_periksa_st+"&jam_periksa_en="+jam_periksa_en+"&uraian="+uraian+"&pemeriksa="+pemeriksa+"&back_url=<?=$back_url;?>"+"&tgl_sppb="+tgl_sppb;
 	}
 
 	function edit_row(no)
@@ -467,7 +472,7 @@
 
 		val_ukuran = val_ukuran.replace("\"","");
 
-		var input_no = "<input id='input_no_"+no+"' name='no' value='"+val_no+"' type='text' style='width:30px; height:14px; vertical-align:middle;'/>";
+		var input_no = "<input id='input_no_"+no+"' name='no' value='"+val_no+"' type='text' style='width:30px; height:14px; vertical-align:middle;' disabled/>";
 		var input_tanggal = "<input id='input_tanggal_"+no+"' name='tanggal' type='text' class='datepicker_"+no+"' value='"+val_tanggal+"' style='width:65px; height:14px; vertical-align:middle;'/>";
 		var input_perusahaan = "<select id='input_perusahaan_"+no+"' name='perusahaan' style='width:150px; height:25px; vertical-align:middle;'>" +
 									"<option value='-'>[Pilih Perusahaan]</option>" + 

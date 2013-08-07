@@ -98,4 +98,97 @@ class Perusahaan_model extends CI_Model
 		if(count($ret) == 0) return 0;
 		return $ret[0]['jml_peruk'];
 	}
+
+	function get_jumlah_kontainer_jml_lalu($kode, $ukuran, $tglx)
+	{
+		if(isset($tglx)){
+			$tglx = str_replace("/", "-", $tglx);
+		}
+		$kueri = "SELECT P.no, P.kode, count(*) as ret
+				  FROM perusahaan P INNER JOIN kontainer K ON P.kode = K.perusahaan WHERE ukuran='$ukuran' AND P.kode='$kode' AND tanggal_masuk < '$tglx'
+				  GROUP BY P.kode ORDER BY no";
+		$ret = $this->db->query($kueri)->result_array();
+		if(count($ret) == 0) return 0;
+		return $ret[0]['ret'];
+	}
+
+	function get_jumlah_kontainer_sisa_lalu($kode, $ukuran, $tglx)
+	{
+		if(isset($tglx)){
+			$tglx = str_replace("/", "-", $tglx);
+		}
+		$kueri = "SELECT P.no, P.kode, count(*) as ret
+				  FROM perusahaan P INNER JOIN kontainer K ON P.kode = K.perusahaan WHERE ukuran='$ukuran' AND P.kode='$kode' AND tanggal_masuk < '$tglx' AND tgl_sppb = '0000-00-00'
+				  GROUP BY P.kode ORDER BY no";
+		$ret = $this->db->query($kueri)->result_array();
+		if(count($ret) == 0) return 0;
+		return $ret[0]['ret'];
+	}
+
+	function get_jumlah_kontainer_masuk_hari_ini($kode, $ukuran, $tglx)
+	{
+		if(isset($tglx)){
+			$tglx = str_replace("/", "-", $tglx);
+		}
+		$kueri = "SELECT P.no, P.kode, count(*) as ret
+				  FROM perusahaan P INNER JOIN kontainer K ON P.kode = K.perusahaan WHERE ukuran='$ukuran' AND P.kode='$kode' AND tanggal_masuk = '$tglx'
+				  GROUP BY P.kode ORDER BY no";
+		$ret = $this->db->query($kueri)->result_array();
+		if(count($ret) == 0) return 0;
+		return $ret[0]['ret'];
+	}
+
+	function get_jumlah_kontainer_ip($kode, $ukuran, $tglx)
+	{
+		if(isset($tglx)){
+			$tglx = str_replace("/", "-", $tglx);
+		}
+		$kueri = "SELECT P.no, P.kode, count(*) as ret
+				  FROM perusahaan P INNER JOIN kontainer K ON P.kode = K.perusahaan WHERE ukuran='$ukuran' AND P.kode='$kode' AND tgl_ip = '$tglx'
+				  GROUP BY P.kode ORDER BY no";
+		$ret = $this->db->query($kueri)->result_array();
+		if(count($ret) == 0) return 0;
+		return $ret[0]['ret'];
+	}
+
+	function get_jumlah_kontainer_sppb($kode, $ukuran, $tglx)
+	{
+		if(isset($tglx)){
+			$tglx = str_replace("/", "-", $tglx);
+		}
+		$kueri = "SELECT P.no, P.kode, count(*) as ret
+				  FROM perusahaan P INNER JOIN kontainer K ON P.kode = K.perusahaan WHERE ukuran='$ukuran' AND P.kode='$kode' AND tgl_sppb = '$tglx'
+				  GROUP BY P.kode ORDER BY no";
+		$ret = $this->db->query($kueri)->result_array();
+		if(count($ret) == 0) return 0;
+		return $ret[0]['ret'];
+	}
+
+	function get_jumlah_kontainer_jumlah($kode, $ukuran, $tglx)
+	{
+		if(isset($tglx)){
+			$tglx = str_replace("/", "-", $tglx);
+		}
+		$kueri = "SELECT P.no, P.kode, count(*) as ret
+				  FROM perusahaan P INNER JOIN kontainer K ON P.kode = K.perusahaan WHERE ukuran='$ukuran' AND P.kode='$kode' AND tanggal_masuk <= '$tglx'
+				  GROUP BY P.kode ORDER BY no";
+		$ret = $this->db->query($kueri)->result_array();
+		if(count($ret) == 0) return 0;
+		return $ret[0]['ret'];
+	}
+
+	function get_jumlah_kontainer_sisa($kode, $ukuran, $tglx)
+	{
+		if(isset($tglx)){
+			$tglx = str_replace("/", "-", $tglx);
+		}
+		$kueri = "SELECT P.no, P.kode, count(*) as ret
+				  FROM perusahaan P INNER JOIN kontainer K ON P.kode = K.perusahaan WHERE ukuran='$ukuran' AND P.kode='$kode' AND tanggal_masuk <= '$tglx' AND tgl_sppb = '0000-00-00'
+				  GROUP BY P.kode ORDER BY no";
+		$ret = $this->db->query($kueri)->result_array();
+		if(count($ret) == 0) return 0;
+		return $ret[0]['ret'];
+	}
 }
+
+
